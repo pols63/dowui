@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DBaseInput from './components/DBaseInput.vue'
+import DBaseInput from './components/base/DBaseInput.vue'
 import { ref } from 'vue'
 
 const input = ref()
@@ -12,5 +12,5 @@ Object.defineProperties(window, {
 </script>
 
 <template>
-	<DBaseInput type="number" v-model:value="input" @error="console.log"></DBaseInput>
+	<DBaseInput type="date" v-model:value="input" @error="console.log"></DBaseInput>
 </template>
