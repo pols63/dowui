@@ -10,10 +10,20 @@ const emit = defineEmits<{
 	(evemt: 'error', value: boolean): void
 }>()
 
-const props = withDefaults( defineProps<{
-	type?: 'text' | 'number' | 'date'
+const props = withDefaults(defineProps<{
+	type?: 'text'
+	value?: string | null
+} | {
+	type: 'number'
 	value?: string | number | null
 	decimals?: number
+	gt?: number
+	gte?: number
+	lt?: number
+	lte?: number
+} | {
+	type: 'date'
+	value?: string | null
 }>(), {
 	type: 'text',
 	decimals: 0,
@@ -89,6 +99,15 @@ const updateValue = (from: string | number | undefined | null, to: 'event' | 'in
 					}
 					break
 				}
+			}
+
+			/* Validaciones de límites, en caso se hayan especificado */
+			if (!thereIsAnError && result != '') {
+				const value = typeof result == 'number' ? result : Number(result)
+				if ('gt' in props && typeof props.gt == 'number') thereIsAnError = value <= props.gt
+				if ('gte' in props && typeof props.gte == 'number') thereIsAnError = value < props.gte
+				if ('lt' in props && typeof props.lt == 'number') thereIsAnError = value >= props.lt
+				if ('lte' in props && typeof props.lte == 'number') thereIsAnError = value > props.lte
 			}
 			break
 		}
