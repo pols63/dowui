@@ -23,8 +23,10 @@ export type Appearance = {
 	position: Position
 	align: Align
 	arrowSize: number
+	borderWidth: number
 	borderColor: string
 	backgroundColor: string
+	borderRadius: number
 	shadow: string
 	zIndex: number
 }
@@ -34,10 +36,12 @@ export const defaultAppearance: Appearance = {
 	margin: 5,
 	position: Position.bottom,
 	align: Align.center,
-	arrowSize: 15,
-	borderColor: 'white',
+	arrowSize: 10,
+	borderWidth: 0,
+	borderColor: 'black',
 	backgroundColor: 'white',
-	shadow: '0px 0px 5px black',
+	borderRadius: 4,
+	shadow: '0px 0px 5px #00000088',
 	zIndex: 9999999
 }
 
@@ -48,7 +52,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { nextTick, ref, useAttrs, watch, onMounted } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 
 const props = withDefaults(defineProps<{
 	target?: HTMLElement
@@ -100,6 +104,15 @@ const contentElementCoords = reactive<{
 	x: 0,
 	y: 0
 })
+const arrowElementCoords = reactive<{
+	visible: boolean
+	x: number
+	y: number
+}>({
+	visible: false,
+	x: 0,
+	y: 0
+})
 
 const getBoundingClientRect = async () => {
 	await nextTick()
@@ -114,6 +127,7 @@ const calculatePosition = async () => {
 	
 	const margins = Helpers.calculateBoundborders(props.appearance?.margin, _appearance.margin)
 	const arrowSize = props.appearance?.arrowSize ?? _appearance.arrowSize
+	const borderRadius = props.appearance?.borderRadius ?? _appearance.borderRadius
 
 	/* Elimina los límites de tamaño del elemento de contenido de forma que se adapte a sus elementos hijos */
 	contentElementCoords.maxWidth = null
@@ -222,6 +236,8 @@ const calculatePosition = async () => {
 			break
 		case Position.bottom:
 			contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height + arrowSize
+			arrowElementCoords.y = contentElementCoords.y - arrowSize
+			arrowElementCoords.visible = true
 			break
 		case Position.vertical:
 			contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height / 2 - contentElementClientRect.height / 2
@@ -257,6 +273,7 @@ const calculatePosition = async () => {
 			switch (align) {
 				case Align.start:
 					contentElementCoords.x = currentTargetElementClientRect.x
+					arrowElementCoords.x = contentElementCoords.x + borderRadius
 					break
 				case Align.center:
 					contentElementCoords.x = currentTargetElementClientRect.x + currentTargetElementClientRect.width / 2 - contentElementClientRect.width / 2
@@ -296,7 +313,7 @@ const calculatePosition = async () => {
 	}
 }
 
-const setPosition = async () => {
+const setPosition = async (el: Element, done: () => void) => {
 	if (!props.target) {
 		emit('update:visible', false)
 		return
@@ -318,14 +335,29 @@ const focusuot = (event: FocusEvent) => {
 
 <template>
 	<teleport :to="teleportTo">
-		<transition name="fade" @enter="setPosition()" @after-enter="$emit('shown')">
-			<div class="d-tooltip" v-if="_visible">
-				<div class="d-tooltip__arrow"></div>
-				<div class="d-tooltip__content" ref="contentElement" tabindex="0" @focusout="focusuot($event)" :style="{
+		<transition name="fade" @enter="setPosition" @after-enter="$emit('shown')">
+			<div class="d-tooltip" v-if="_visible" :style="{
+					filter: 'drop-shadow(' + (appearance?.shadow ?? _appearance.shadow) + ')',
+					zIndex: appearance?.zIndex ?? _appearance.zIndex,
+				}">
+				<div class="d-tooltip__arrow" v-if="arrowElementCoords.visible" :style="{
+						borderBottomWidth: (appearance?.arrowSize ?? _appearance.arrowSize) + 'px',
+						borderLeftWidth: ((appearance?.arrowSize ?? _appearance.arrowSize) / 1.4) + 'px',
+						borderRightWidth: ((appearance?.arrowSize ?? _appearance.arrowSize) / 1.4) + 'px',
+						borderBottomColor: (appearance?.borderWidth ?? _appearance.borderWidth) ? (appearance?.borderColor ?? _appearance.borderColor) : (appearance?.backgroundColor ?? _appearance.backgroundColor),
+						top: arrowElementCoords.y + 'px',
+						left: arrowElementCoords.x + 'px',
+					}"></div>
+				<div class="d-tooltip__content" ref="contentElement" tabindex="0" focusout="focusuot($event)" :style="{
 						maxHeight: contentElementCoords.maxHeight + 'px',
 						maxWidth: contentElementCoords.maxWidth + 'px',
+						borderWidth: (appearance?.borderWidth ?? _appearance.borderWidth) + 'px',
+						borderColor: (appearance?.borderColor ?? _appearance.borderColor) + 'px',
 						top: contentElementCoords.y + 'px',
-						left: contentElementCoords.x + 'px'
+						left: contentElementCoords.x + 'px',
+						backgroundColor: appearance?.backgroundColor ?? _appearance.backgroundColor,
+						padding: (appearance?.padding ?? _appearance.padding) + 'px',
+						borderRadius: (appearance?.borderRadius ?? _appearance.borderRadius) + 'px',
 					}">
 					<slot></slot>
 				</div>
@@ -336,17 +368,24 @@ const focusuot = (event: FocusEvent) => {
 
 <style lang="scss">
 .d-tooltip {
-	filter: drop-shadow(v-bind('$props.appearance?.shadow ?? _appearance.shadow'));
-	z-index: v-bind('$props.appearance?.zIndex ?? _appearance.zIndex');
+	left: 0px;
+	top: 0px;
+	width: 0px;
+	height: 0px;
 	position: fixed;
 
+	.d-tooltip__arrow {
+		position: fixed;
+		border-style: solid;
+		border-top-width: 0px;
+		border-left-color: transparent;
+		border-right-color: transparent;
+	}
+
 	.d-tooltip__content {
-		background-color: v-bind('$props.appearance?.backgroundColor ?? _appearance.backgroundColor');
-		padding: v-bind('$props.appearance?.padding ?? _appearance.padding');
-		border-radius: 4px;
-		width: fit-content;
 		position: fixed;
 		box-sizing: border-box;
+		border-style: solid;
 
 		&:focus-visible {
 			outline: none;

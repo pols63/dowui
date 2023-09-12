@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import DTooltip from './DTooltip.vue'
+import DTooltip, { Align } from './DTooltip.vue'
 
 const tooltipVisible = ref<boolean>(false)
 const body = ref<HTMLElement>()
@@ -9,6 +9,9 @@ const body = ref<HTMLElement>()
 <template>
 	<div>
 		<div @click="tooltipVisible = true" ref="body">Hola</div>
-		<DTooltip v-model:visible="tooltipVisible" :appearance="{ backgroundColor: 'silver' }" :target="body">Esta es la lista de opciones</DTooltip>
+		<DTooltip v-model:visible="tooltipVisible" :appearance="{ align: Align.start, borderWidth: 2 }" :target="body">
+			<div style="white-space: nowrap;">Esta es la lista de opciones</div>
+			<div>Esta es la lista de opciones</div>
+		</DTooltip>
 	</div>
 </template>
