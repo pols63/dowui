@@ -54,7 +54,7 @@ const props = withDefaults(defineProps<{
 	target?: HTMLElement
 	visible?: boolean
 	teleportTo?: string
-	appearance?: Appearance
+	appearance?: Partial<Appearance>
 }>(), {
 	visible: false,
 	position: Position.bottom,
@@ -215,28 +215,41 @@ const calculatePosition = async () => {
 	}
 	contentElementClientRect = await getBoundingClientRect()
 
-	/* Ubica el tooltip según la posición calculada */
+	/* Ubica el tooltip según la posición calculada. Realiza el cálculo sobre el eje principal según la posición escogida */
 	switch (finalPosition) {
 		case Position.top:
-			contentElementCoords.y = margins[0]
+			contentElementCoords.y = currentTargetElementClientRect.y - contentElementClientRect.height - arrowSize
 			break
 		case Position.bottom:
 			contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height + arrowSize
 			break
 		case Position.vertical:
 			contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height / 2 - contentElementClientRect.height / 2
+			/* Se corrige si es necesario */
+			if (contentElementCoords.y < margins[0]) {
+				contentElementCoords.y = margins[0]
+			} else if (contentElementCoords.y + contentElementClientRect.height > window.innerHeight - margins[2]) {
+				contentElementCoords.y = window.innerHeight - margins[2] - contentElementClientRect.height
+			}
 			break
 		case Position.left:
-			contentElementCoords.x = margins[3]
+			contentElementCoords.x = currentTargetElementClientRect.x - contentElementClientRect.width - arrowSize
 			break
 		case Position.right:
 			contentElementCoords.x = currentTargetElementClientRect.x + currentTargetElementClientRect.width + arrowSize
 			break
 		case Position.horizontal:
 			contentElementCoords.x = currentTargetElementClientRect.x + currentTargetElementClientRect.width / 2 - contentElementClientRect.width / 2
+			/* Se corrige si es necesario */
+			if (contentElementCoords.x < margins[3]) {
+				contentElementCoords.x = margins[3]
+			} else if (contentElementCoords.x + contentElementClientRect.width > window.innerWidth - margins[1]) {
+				contentElementCoords.x = window.innerWidth - margins[1] - contentElementClientRect.width
+			}
 			break
 	}
 
+	/* Ubica la posición del tooltip en el eje secundario, según la alineación escogida */
 	switch (finalPosition) {
 		case Position.top:
 		case Position.bottom:
@@ -245,40 +258,49 @@ const calculatePosition = async () => {
 				case Align.start:
 					contentElementCoords.x = currentTargetElementClientRect.x
 					break
+				case Align.center:
+					contentElementCoords.x = currentTargetElementClientRect.x + currentTargetElementClientRect.width / 2 - contentElementClientRect.width / 2
+					break
+				case Align.end:
+					contentElementCoords.x = currentTargetElementClientRect.x + currentTargetElementClientRect.width - contentElementClientRect.width
+					break
+			}
+			/* Se corrige si es necesario */
+			if (contentElementCoords.x < margins[3]) {
+				contentElementCoords.x = margins[3]
+			} else if (contentElementCoords.x + contentElementClientRect.width > window.innerWidth - margins[1]) {
+				contentElementCoords.x = window.innerWidth - margins[1] - contentElementClientRect.width
+			}
+			break
+		case Position.left:
+		case Position.right:
+		case Position.horizontal:
+			switch (align) {
+				case Align.start:
+					contentElementCoords.y = currentTargetElementClientRect.y
+					break
+				case Align.center:
+					contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height / 2 - contentElementClientRect.height / 2
+					break
+				case Align.end:
+					contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height - contentElementClientRect.height
+					break
+			}
+			/* Se corrige si es necesario */
+			if (contentElementCoords.y < margins[0]) {
+				contentElementCoords.y = margins[0]
+			} else if (contentElementCoords.y + contentElementClientRect.height > window.innerHeight - margins[2]) {
+				contentElementCoords.y = window.innerHeight - margins[2] - contentElementClientRect.height
 			}
 			break
 	}
-
-	// switch (finalPosition) {
-	// 	case Position.bottom:
-	// 		if (contentElementClientRect.height > availableSpaces.bottom) {
-	// 			if (contentElementClientRect.height > availableSpaces.top) {
-	// 				if (availableSpaces.bottom > availableSpaces.top) {
-	// 					maxHeight.value = availableSpaces.bottom
-	// 					contentElementCoords.y = currentTargetClientRect.y + currentTargetClientRect.height
-	// 				} else {
-	// 					maxHeight.value = availableSpaces.top
-	// 					contentElementClientRect = await getBoundingClientRect()
-	// 					contentElementCoords.y = currentTargetClientRect.y - contentElementClientRect.height
-	// 				}
-	// 			} else {
-	// 				contentElementCoords.y = currentTargetClientRect.y - contentElementClientRect.height
-	// 			}
-	// 		} else {
-	// 			contentElementCoords.y = currentTargetClientRect.y + currentTargetClientRect.height
-	// 		}
-	// 		contentElementCoords.x = currentTargetClientRect.x + currentTargetClientRect.width - contentElementClientRect.width
-	// 		break
-	// 	case Position.top:
-	// 		break
-	// 	case Position.left:
-	// 		break
-	// 	case Position.right:
-	// 		break
-	// }
 }
 
 const setPosition = async () => {
+	if (!props.target) {
+		emit('update:visible', false)
+		return
+	}
 	await calculatePosition()
 
 	const elementToFocus = contentElement.value?.querySelector('[autofocus]')
@@ -297,7 +319,7 @@ const focusuot = (event: FocusEvent) => {
 <template>
 	<teleport :to="teleportTo">
 		<transition name="fade" @enter="setPosition()" @after-enter="$emit('shown')">
-			<template v-if="_visible">
+			<div class="d-tooltip" v-if="_visible">
 				<div class="d-tooltip__arrow"></div>
 				<div class="d-tooltip__content" ref="contentElement" tabindex="0" @focusout="focusuot($event)" :style="{
 						maxHeight: contentElementCoords.maxHeight + 'px',
@@ -307,25 +329,28 @@ const focusuot = (event: FocusEvent) => {
 					}">
 					<slot></slot>
 				</div>
-			</template>
+			</div>
 		</transition>
 	</teleport>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .d-tooltip {
-	padding: v-bind('$props.appearance?.padding ?? _appearance.padding');
-	border-radius: 4px;
-	background-color: v-bind('$props.appearance?.backgroundColor ?? _appearance.backgroundColor');
 	filter: drop-shadow(v-bind('$props.appearance?.shadow ?? _appearance.shadow'));
 	z-index: v-bind('$props.appearance?.zIndex ?? _appearance.zIndex');
-	width: fit-content;
-	max-width: 100vw;
 	position: fixed;
-	box-sizing: border-box;
 
-	.d-tooltip__content:focus-visible {
-		outline: none;
+	.d-tooltip__content {
+		background-color: v-bind('$props.appearance?.backgroundColor ?? _appearance.backgroundColor');
+		padding: v-bind('$props.appearance?.padding ?? _appearance.padding');
+		border-radius: 4px;
+		width: fit-content;
+		position: fixed;
+		box-sizing: border-box;
+
+		&:focus-visible {
+			outline: none;
+		}
 	}
 
 	&.fade {

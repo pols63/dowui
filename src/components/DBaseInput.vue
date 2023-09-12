@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Utilities } from '../utilities'
+import { Utilities } from '@/components/utilities'
 </script>
 
 <script setup lang="ts">
