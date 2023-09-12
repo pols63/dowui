@@ -36,12 +36,12 @@ export const defaultAppearance: Appearance = {
 	margin: 5,
 	position: Position.bottom,
 	align: Align.center,
-	arrowSize: 10,
+	arrowSize: 7,
 	borderWidth: 0,
 	borderColor: 'black',
 	backgroundColor: 'white',
 	borderRadius: 4,
-	shadow: '0px 0px 5px #00000088',
+	shadow: '0px 0px 3px #00000088',
 	zIndex: 9999999
 }
 
@@ -106,10 +106,30 @@ const contentElementCoords = reactive<{
 })
 const arrowElementCoords = reactive<{
 	visible: boolean
+	style: {
+		borderTopWidth: string
+		borderBottomWidth: string
+		borderLeftWidth: string
+		borderRightWidth: string
+		borderTopColor: string
+		borderBottomColor: string
+		borderLeftColor: string
+		borderRightColor: string
+	}
 	x: number
 	y: number
 }>({
 	visible: false,
+	style: {
+		borderTopWidth: '',
+		borderBottomWidth: '',
+		borderLeftWidth: '',
+		borderRightWidth: '',
+		borderTopColor: '',
+		borderBottomColor: '',
+		borderLeftColor: '',
+		borderRightColor: '',
+	},
 	x: 0,
 	y: 0
 })
@@ -127,6 +147,7 @@ const calculatePosition = async () => {
 	
 	const margins = Helpers.calculateBoundborders(props.appearance?.margin, _appearance.margin)
 	const arrowSize = props.appearance?.arrowSize ?? _appearance.arrowSize
+	const arrowColor = (props.appearance?.borderWidth ?? _appearance.borderWidth) ? (props.appearance?.borderColor ?? _appearance.borderColor) : (props.appearance?.backgroundColor ?? _appearance.backgroundColor)
 	const borderRadius = props.appearance?.borderRadius ?? _appearance.borderRadius
 
 	/* Elimina los límites de tamaño del elemento de contenido de forma que se adapte a sus elementos hijos */
@@ -273,7 +294,6 @@ const calculatePosition = async () => {
 			switch (align) {
 				case Align.start:
 					contentElementCoords.x = currentTargetElementClientRect.x
-					arrowElementCoords.x = contentElementCoords.x + borderRadius
 					break
 				case Align.center:
 					contentElementCoords.x = currentTargetElementClientRect.x + currentTargetElementClientRect.width / 2 - contentElementClientRect.width / 2
@@ -311,6 +331,87 @@ const calculatePosition = async () => {
 			}
 			break
 	}
+
+	/* Posicionamiento del arrow */
+	if (finalPosition == Position.horizontal || finalPosition == Position.vertical) {
+		arrowElementCoords.visible = false
+	} else {
+		switch (finalPosition) {
+			case Position.top:
+			case Position.bottom:
+				switch (align) {
+					case Align.start:
+						arrowElementCoords.x = contentElementCoords.x + borderRadius
+						break
+					case Align.center:
+						arrowElementCoords.x = contentElementCoords.x + contentElementClientRect.width / 2 - arrowSize / 2
+						break
+					case Align.end:
+						arrowElementCoords.x = contentElementCoords.x + contentElementClientRect.width - borderRadius - arrowSize
+						break
+				}
+				break
+			case Position.left:
+			case Position.right:
+				switch (align) {
+					case Align.start:
+						arrowElementCoords.y = contentElementCoords.y + borderRadius
+						break
+					case Align.center:
+						arrowElementCoords.y = contentElementCoords.y + contentElementClientRect.height / 2 - arrowSize / 2
+						break
+					case Align.end:
+						contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height - contentElementClientRect.height
+						break
+				}
+				break
+		}
+
+		/* Estilo del arrow */
+		switch (finalPosition) {
+			case Position.top:
+				arrowElementCoords.style.borderTopWidth = arrowSize + 'px'
+				arrowElementCoords.style.borderTopColor = arrowColor
+				arrowElementCoords.style.borderBottomWidth = '0px'
+				arrowElementCoords.style.borderBottomColor = 'transparent'
+				break
+			case Position.bottom:
+				arrowElementCoords.style.borderBottomWidth = arrowSize + 'px'
+				arrowElementCoords.style.borderBottomColor = arrowColor
+				arrowElementCoords.style.borderTopWidth = '0px'
+				arrowElementCoords.style.borderTopColor = 'transparent'
+				break
+			case Position.left:
+				arrowElementCoords.style.borderLeftWidth = arrowSize + 'px'
+				arrowElementCoords.style.borderLeftColor = arrowColor
+				arrowElementCoords.style.borderRightWidth = '0px'
+				arrowElementCoords.style.borderRightColor = 'transparent'
+				break
+			case Position.right:
+				arrowElementCoords.style.borderRightWidth = arrowSize + 'px'
+				arrowElementCoords.style.borderRightColor = arrowColor
+				arrowElementCoords.style.borderLeftWidth = '0px'
+				arrowElementCoords.style.borderLeftColor = 'transparent'
+				break
+		}
+
+		switch (finalPosition) {
+			case Position.top:
+			case Position.bottom:
+				arrowElementCoords.style.borderLeftWidth = (arrowSize / 1.5) + 'px'
+				arrowElementCoords.style.borderLeftColor = 'transparent'
+				arrowElementCoords.style.borderRightWidth = (arrowSize / 1.5) + 'px'
+				arrowElementCoords.style.borderRightColor = 'transparent'
+				break
+			case Position.left:
+			case Position.right:
+				arrowElementCoords.style.borderTopWidth = (arrowSize / 1.5) + 'px'
+				arrowElementCoords.style.borderTopColor = 'transparent'
+				arrowElementCoords.style.borderBottomWidth = (arrowSize / 1.5) + 'px'
+				arrowElementCoords.style.borderBottomColor = 'transparent'
+				break
+		}
+	}
 }
 
 const setPosition = async (el: Element, done: () => void) => {
@@ -341,14 +442,11 @@ const focusuot = (event: FocusEvent) => {
 					zIndex: appearance?.zIndex ?? _appearance.zIndex,
 				}">
 				<div class="d-tooltip__arrow" v-if="arrowElementCoords.visible" :style="{
-						borderBottomWidth: (appearance?.arrowSize ?? _appearance.arrowSize) + 'px',
-						borderLeftWidth: ((appearance?.arrowSize ?? _appearance.arrowSize) / 1.4) + 'px',
-						borderRightWidth: ((appearance?.arrowSize ?? _appearance.arrowSize) / 1.4) + 'px',
-						borderBottomColor: (appearance?.borderWidth ?? _appearance.borderWidth) ? (appearance?.borderColor ?? _appearance.borderColor) : (appearance?.backgroundColor ?? _appearance.backgroundColor),
+						...arrowElementCoords.style,
 						top: arrowElementCoords.y + 'px',
 						left: arrowElementCoords.x + 'px',
 					}"></div>
-				<div class="d-tooltip__content" ref="contentElement" tabindex="0" focusout="focusuot($event)" :style="{
+				<div class="d-tooltip__content" ref="contentElement" tabindex="0" @focusout="focusuot($event)" :style="{
 						maxHeight: contentElementCoords.maxHeight + 'px',
 						maxWidth: contentElementCoords.maxWidth + 'px',
 						borderWidth: (appearance?.borderWidth ?? _appearance.borderWidth) + 'px',
