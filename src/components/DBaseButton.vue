@@ -1,35 +1,43 @@
-<script lang="ts">
-import { Helpers, type BoundBorders } from './helpers'
-
-export default {
-	inheritAttrs: false
-}
-</script>
-
 <script setup lang="ts">
-import DIcon from './DIcon.vue'
+import { ref, watch } from 'vue';
+
+const emit = defineEmits<{
+	(e: 'click', event: MouseEvent): void
+}>()
 
 const props = withDefaults(defineProps<{
 	type?: 'button' | 'submit'
 	focusable?: boolean
-	icon?: string
-	styleBody?: Partial<CSSStyleDeclaration>
-	styleLabel?: Partial<CSSStyleDeclaration>
-	styleIcon?: Partial<CSSStyleDeclaration>
+	preventDoubleClick?: boolean
+	disabled?: boolean
 }>(), {
 	type: 'button',
 	focusable: true,
+	preventDoubleClick: false,
+	disabled: false
 })
+
+const active = ref<boolean>(true)
+let interval: number
+
+watch(() => props.disabled, (newValue) => {
+	clearInterval(interval)
+	active.value = newValue == null ? true : !newValue
+})
+
+const click = (event: MouseEvent) => {
+	if (!active.value) return
+	emit('click', event)
+	if (!props.preventDoubleClick) return
+	active.value = false
+	interval = setTimeout(() => {
+		active.value = true
+	}, 500)
+}
 </script>
 
 <template>
-	<component :is="focusable ? type : 'span'" class="d-button" :style="styleBody">
-		<component :is="'span'" class="d-button__label" :style="styleLabel">
+	<component :is="focusable ? type : 'span'" @click="click" :class="disabled ? 'disabled' : ''">
 			<slot></slot>
-		</component>
-		<component :is="'span'" class="d-button__icon" v-if="!Helpers.Slot.isEmpty($slots.icon) || icon" :style="styleIcon">
-			<slot name="icon" v-if="!Helpers.Slot.isEmpty($slots.icon) && !icon"></slot>
-			<DIcon :icon="icon"></DIcon>
-		</component>
 	</component>
 </template>

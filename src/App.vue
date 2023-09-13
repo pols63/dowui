@@ -2,6 +2,7 @@
 import DBaseInput from './components/DBaseInput.vue'
 import { ref } from 'vue'
 import DSelect from './components/DSelect.vue'
+import DBaseButton from './components/DBaseButton.vue'
 import DButton from './components/DButton.vue'
 
 const input = ref()
@@ -16,7 +17,11 @@ Object.defineProperties(window, {
 <template>
 	<DBaseInput type="date" v-model:value="input" @error="console.log"></DBaseInput>
 	<DSelect></DSelect>
-	<DButton icon="key">Guardar</DButton>
+	<DBaseButton icon="key">Guardar</DBaseButton>
+	<div>
+		<DButton icon="key" :appearance="{ backLight: true }">Guardar</DButton>
+	</div>
+	<DButton icon="key" :appearance="{ backLight: true }">Guardar</DButton>
 </template>
 
 <style lang="scss">
