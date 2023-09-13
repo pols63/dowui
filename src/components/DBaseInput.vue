@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<{
 	lt?: number
 	lte?: number
 } | {
-	type: 'date'
+	type: 'date' | 'time'
 	value?: string | null
 }>(), {
 	type: 'text',
@@ -152,6 +152,53 @@ const updateValue = (from: string | number | undefined | null, to: 'event' | 'in
 						} else {
 							result = Utilities.Date.format(tempDate, '@dd/@mm/@y')
 						}
+					} else if (from == null) {
+						result = ''
+					} else {
+						thereIsAnError = true
+						result = from.toString()
+					}
+					break
+				}
+			}
+			break
+		}
+		case 'time': {
+			switch (to) {
+				case 'event': {
+					if (typeof from == 'string' && from != '') {
+						const now = new Date()
+						let hour = Utilities.padLeft(now.getHours(), 2, '0')
+						let minute = Utilities.padLeft(now.getMinutes() + 1, 2, '0')
+						let second = Utilities.padLeft(now.getSeconds(), 4, '0')
+
+						if (from != '*') {
+							const match = from.match(/^([0-9]{1,2})(:?([0-9]{1,2})(:?([0-9]{1,2}))?)?$/)
+							if (match) {
+								hour = Utilities.padLeft(match[1], 2, '0')
+								minute = match[3] ? Utilities.padLeft(match[3], 2, '0') : minute
+								second = match[5] ? Utilities.padLeft(match[5], 2, '0') : second
+							} else {
+								thereIsAnError = true
+							}
+						}
+
+						if (!thereIsAnError) {
+							if (hour > '23' || minute > '59' || second > '59') {
+								thereIsAnError = true
+								result = ''
+							} else {
+								result = `${hour}:${minute}:${second}`
+							}
+						}							
+					}
+					break
+				}
+				case 'input': {
+					if (typeof from == 'string') {
+						const match = from.match(/^([0-2][0-9]):([0-5][0-9]):([0-5][0-9])$/)
+						thereIsAnError = !match || match[1] > '23' || match[2] > '59' || match[3] > '59'
+						result = from
 					} else if (from == null) {
 						result = ''
 					} else {

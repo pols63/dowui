@@ -9,7 +9,7 @@ const body = ref<HTMLElement>()
 <template>
 	<div>
 		<div @click="tooltipVisible = true" ref="body">Hola</div>
-		<DTooltip v-model:visible="tooltipVisible" :appearance="{ position: Position.left, align: Align.start, borderWidth: 2 }" :target="body">
+		<DTooltip v-model:visible="tooltipVisible" :appearance="{ position: Position.left, align: Align.start, borderWidth: 2, padding: [5, 10, 15, 20] }" :target="body">
 			<div style="white-space: nowrap;">Esta es la lista de opciones</div>
 			<div>Esta es la lista de opciones</div>
 		</DTooltip>

@@ -1,0 +1,25 @@
+@use 'sass:math';
+
+/* 
+Entrega un color.
+- $lightness: Brillo del color que varía de -1 (completamente negro) a 1 (completamente blanco). Por defecto es 0.
+- $alpha: Valor alpha del color que varía de 0 (completamente transparente) a 1 (completamente opaco). Por defecto es 1.
+*/
+@function calculate-color($color, $lightness: 0, $alpha: 1) {
+	@if type-of($color) != color {
+		@error "#{$color} no es un color válido";
+	}
+	@return scale-color($color, $lightness: $lightness * 100%, $alpha: (1 - $alpha) * -100%);
+}
+
+/* Función que carga las fuentes */
+@mixin load-font($font-name, $config-map) {
+	@each $sufix, $weight, $style in $config-map {
+		@font-face {
+			font-family: $font-name;
+			src: url("/fonts/" + $font-name + "/" + $font-name + if($sufix == "", "",  "-" + $sufix) + ".ttf") format("truetype");
+			font-weight: $weight;
+			font-style: $style;
+		}
+	}
+}

@@ -9,5 +9,13 @@ export default defineConfig({
 		alias: {
 			'@': fileURLToPath(new URL('./src', import.meta.url))
 		}
-	}
+	},
+	css: {
+		/* Esto permite que todos los componentes de forma implícita importen el archivo 'helpers' */
+		preprocessorOptions: {
+			scss: {
+				additionalData: `@import '@/components/helpers';`
+			}
+		}
+	},
 })
