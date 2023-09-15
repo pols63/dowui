@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<{
 	disabled: false
 })
 
+const element = ref<HTMLElement>()
 const active = ref<boolean>(true)
 let interval: number
 
@@ -37,7 +38,7 @@ const click = (event: MouseEvent) => {
 </script>
 
 <template>
-	<component :is="focusable ? type : 'span'" @click="click" :class="disabled ? 'disabled' : ''">
+	<component :is="focusable ? type : 'span'" @click="click" :class="disabled ? 'disabled' : ''" ref="element">
 			<slot></slot>
 	</component>
 </template>

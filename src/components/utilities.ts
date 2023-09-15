@@ -18,8 +18,8 @@ const Months = {
 
 export const Colors = {
 	blue: '#0d6efe',
-	gray: '#6c757e',
-	green: '#198755',
+	gray: '#7d868f',
+	green: '#299765',
 	red: '#dc3546',
 	yellow: '#ffc108',
 	skyBlue: '#0cb9e1',

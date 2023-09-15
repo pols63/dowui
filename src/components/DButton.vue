@@ -10,75 +10,75 @@ export enum IconPosition {
 
 export type Appearance = {
 	padding: number | string
+	gap: number | string
 	borderRadius: number | string
 	borderColor: string
 	color: string
+	focusColor: string
+	backgroundColor: string
+	backgroundColorHover: string
+	clickColor: string
 	/* Icon */
 	iconPadding: number | string
 	iconPosition: IconPosition,
 	iconSize: number
-	iconBackgroundColor: string
-	iconBackgroundColorHover: string
-	iconBackgroundColorActive: string
 	/* Label */
 	labelPadding: number | string
-	labelBackgroundColor: string
-	labelBackgroundColorHover: string
-	labelBackgroundColorActive: string
 }
 
 export const defaultAppearance: Record<string, Appearance> = (() => {
 	const result: Record<string, Appearance> = {}
 	for (const color in Colors) {
 		let colorValue0 = (Colors as Record<string, string>)[color]
-		if (['lime'].includes(color)) {
-			colorValue0 = Utilities.Color.calculate(colorValue0, { light: -0.2 })
-		} else if (['gold'].includes(color)) {
-			colorValue0 = Utilities.Color.calculate(colorValue0, { light: -0.2 })
+		// if (['lime'].includes(color)) {
+		// 	colorValue0 = Utilities.Color.calculate(colorValue0, { light: -0.2 })
+		// } else if (['gold'].includes(color)) {
+		// 	colorValue0 = Utilities.Color.calculate(colorValue0, { light: -0.2 })
+		// }
+		let fontColor = 'white'
+		if (['lime', 'gold'].includes(color)) {
+			fontColor = 'black'
 		}
-		const colorValue1 = Utilities.Color.calculate(colorValue0, { light: -0.2 })
 		const colorValue2 = Utilities.Color.calculate(colorValue0, { light: -0.1 })
-		const colorValue3 = Utilities.Color.calculate(colorValue0, { light: 0.1 })
-		const colorValue4 = Utilities.Color.calculate(colorValue0, { light: 0.2 })
 		result[color] = {
-			padding: 2,
+			padding: 7,
+			gap: 7,
 			borderRadius: 4,
 			borderColor: 'transparent',
-			color: 'white',
+			color: fontColor,
+			focusColor: 'white',
+			backgroundColor: colorValue0,
+			backgroundColorHover: colorValue2,
+			clickColor: 'white',
 			/* Icon */
-			iconPadding: 5,
-			iconPosition: IconPosition.bottom,
-			iconSize: 24,
-			iconBackgroundColor: colorValue4,
-			iconBackgroundColorHover: colorValue3,
-			iconBackgroundColorActive: colorValue0,
+			iconPadding: 0,
+			iconPosition: IconPosition.left,
+			iconSize: 18,
 			/* Label */
-			labelPadding: 5,
-			labelBackgroundColor: colorValue0,
-			labelBackgroundColorHover: colorValue2,
-			labelBackgroundColorActive: colorValue1,
+			labelPadding: 0,
 		}
 
-		const colorValue5 = Utilities.Color.calculate(colorValue0, { light: 0.85 })
-		const colorValue6 = Utilities.Color.calculate(colorValue0, { light: 0.9 })
-		const colorValue7 = Utilities.Color.calculate(colorValue0, { light: 0.95 })
+		fontColor = colorValue0
+		if (['lime', 'gold'].includes(color)) {
+			fontColor = Utilities.Color.calculate(colorValue0, { light: -0.2 })
+		}
+		const colorValue7 = Utilities.Color.calculate(fontColor, { light: 0.95 })
 		result['invert-' + color] = {
-			padding: 2,
+			padding: 7,
+			gap: 7,
 			borderRadius: 4,
-			borderColor: colorValue0,
-			color: colorValue0,
+			borderColor: fontColor,
+			color: fontColor,
+			focusColor: fontColor,
+			backgroundColor: 'white',
+			backgroundColorHover: colorValue7,
+			clickColor: fontColor,
 			/* Icon */
-			iconPadding: 5,
-			iconPosition: IconPosition.bottom,
+			iconPadding: 0,
+			iconPosition: IconPosition.left,
 			iconSize: 18,
-			iconBackgroundColor: colorValue7,
-			iconBackgroundColorHover: colorValue6,
-			iconBackgroundColorActive: colorValue5,
 			/* Label */
-			labelPadding: 5,
-			labelBackgroundColor: 'white',
-			labelBackgroundColorHover: colorValue7,
-			labelBackgroundColorActive: colorValue6,
+			labelPadding: 0,
 		}
 	}
 	return result
@@ -90,11 +90,13 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, reactive, ref, nextTick } from 'vue'
 import DBaseButton from './DBaseButton.vue'
 import DIcon from './DIcon.vue'
 
-const slots = useSlots()
+const emit = defineEmits<{
+	(e: 'click', event: MouseEvent): void
+}>()
 
 const props = withDefaults(defineProps<{
 	appearance?: Partial<Appearance>
@@ -110,6 +112,21 @@ const props = withDefaults(defineProps<{
 	preventDoubleClick: false
 })
 
+const clickElement = reactive<{
+	x: string
+	y: string
+	size: number
+	animating: boolean
+}>({
+	x: '0px',
+	y: '0px',
+	size: 0,
+	animating: false,
+})
+const bodyElement = ref<InstanceType<typeof DBaseButton>>()
+
+const slots = useSlots()
+
 const _appearance = computed(() => {
 	return {
 		...defaultAppearance[props.defaultAppearance],
@@ -118,6 +135,7 @@ const _appearance = computed(() => {
 })
 
 const iconSlotIsEmpty = computed(() => Utilities.Slot.isEmpty(slots.icon))
+const labelSlotIsEmpty = computed(() => Utilities.Slot.isEmpty(slots.default))
 
 const gridTemplateAreas = computed(() => {
 	if (!props.icon && iconSlotIsEmpty.value) {
@@ -135,31 +153,60 @@ const gridTemplateAreas = computed(() => {
 		}
 	}
 })
+
+const click = async (event: MouseEvent) => {
+	clickElement.animating = false
+	await nextTick()
+	if (event instanceof TouchEvent) {
+		clickElement.x = '50%'
+		clickElement.y = '50%'
+	} else {
+		let x = event.offsetX
+		let y = event.offsetY
+		if (event.target != event.currentTarget) {
+			x += (event.target as HTMLElement).offsetLeft
+			y += (event.target as HTMLElement).offsetTop
+		}
+		clickElement.x = x + 'px'
+		clickElement.y = y + 'px'
+	}
+
+	/* Obtiene las dimensiones del botón para escalar el punto creciente hasta un tamaño máximo */
+	const rect = (bodyElement.value?.$refs.element as HTMLElement).getClientRects()[0]
+	const maxWidth = rect.width * 2
+	const maxHeight = rect.height * 2
+	clickElement.size = Math.max(maxHeight, maxWidth) / 10
+	clickElement.animating = true
+	emit('click', event)
+}
 </script>
 
 <template>
-	<DBaseButton :icon="icon" :type="type" :focusable="focusable" class="d-button" :style="{
+	<DBaseButton :icon="icon" :type="type" :focusable="focusable" class="d-button" @click="click" ref="bodyElement" :style="{
 		'--padding': _appearance.padding + (typeof _appearance.padding == 'number' ? 'px' : ''),
+		'gap': labelSlotIsEmpty ? '0px' : (_appearance.gap + (typeof _appearance.gap == 'number' ? 'px' : '')),
 		'--borderRadius': _appearance.borderRadius + (typeof _appearance.borderRadius == 'number' ? 'px' : ''),
 		'--borderColor': _appearance.borderColor,
 		'--color': _appearance.color,
+		'--focusColor': _appearance.focusColor,
+		'--backgroundColor': _appearance.backgroundColor,
+		'--backgroundColorHover': _appearance.backgroundColorHover,
 		'--iconPadding': _appearance.iconPadding + (typeof _appearance.iconPadding == 'number' ? 'px' : ''),
 		'--iconSize': _appearance.iconSize + (typeof _appearance.iconSize == 'number' ? 'px' : ''),
-		'--iconBackgroundColor': _appearance.iconBackgroundColor,
-		'--iconBackgroundColorHover': _appearance.iconBackgroundColorHover,
-		'--iconBackgroundColorActive': _appearance.iconBackgroundColorActive,
 		'--labelPadding': _appearance.labelPadding + (typeof _appearance.labelPadding == 'number' ? 'px' : ''),
-		'--labelBackgroundColor': _appearance.labelBackgroundColor,
-		'--labelBackgroundColorHover': _appearance.labelBackgroundColorHover,
-		'--labelBackgroundColorActive': _appearance.labelBackgroundColorActive,
+		'--clickColor': _appearance.clickColor,
 		gridTemplateAreas: gridTemplateAreas
 	}">
-		<span class="d-button__border"></span>
+		<span class="d-button__click" :class="clickElement.animating ? 'animating' : ''" :style="{
+			'--x': clickElement.x,
+			'--y': clickElement.y,
+			'--size': clickElement.size,
+		}"></span>
 		<span class="d-button__icon" v-if="!Utilities.Slot.isEmpty($slots.icon) || icon">
 			<DIcon :icon="icon"></DIcon>
 			<slot name="icon" v-if="!Utilities.Slot.isEmpty($slots.icon) && !icon"></slot>
 		</span>
-		<span class="d-button__label">
+		<span class="d-button__label" v-if="!Utilities.Slot.isEmpty($slots.default)">
 			<slot></slot>
 		</span>
 	</DBaseButton>
@@ -168,25 +215,48 @@ const gridTemplateAreas = computed(() => {
 <style lang="scss">
 .d-button {
 	position: relative;
-	padding: 0px;
-	border: none;
+	padding: var(--padding);
+	border: 1px solid var(--borderColor);
 	color: var(--color);
 	box-sizing: border-box;
 	display: inline-grid;
 	grid-auto-flow: column;
 	align-items: stretch;
-	background-color: var(--labelBackgroundColor);
+	background-color: var(--backgroundColor);
 	border-radius: var(--borderRadius);
 	overflow: hidden;
 
-	.d-button__border {
+	.d-button__click {
+		transform-origin: center;
+		top: -10px;
+		left: -10px;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
 		position: absolute;
-		top: 0px;
-		bottom: 0px;
-		left: 0px;
-		right: 0px;
-		border-radius: var(--borderRadius);
-		border: 1px solid var(--borderColor);
+		background: radial-gradient(var(--clickColor) 0%, var(--clickColor) 40%, transparent 90%);
+		opacity: 0;
+		z-index: 1;
+
+		&.animating {
+			animation: 0.5s forwards clicking ease-out;
+		}
+	}
+
+	@keyframes clicking {
+		0% {
+			opacity: 0;
+			transform: translate(var(--x), var(--y)) scale(0);
+		}
+
+		20% {
+			opacity: 0.4;
+		}
+
+		100% {
+			opacity: 0;
+			transform: translate(var(--x), var(--y)) scale(var(--size));
+		}
 	}
 
 	.d-button__label {
@@ -195,7 +265,6 @@ const gridTemplateAreas = computed(() => {
 		align-items: center;
 		justify-items: center;
 		padding: var(--labelPadding);
-		background-color: var(--labelBackgroundColor);
 	}
 
 	.d-button__icon {
@@ -203,31 +272,20 @@ const gridTemplateAreas = computed(() => {
 		align-items: center;
 		justify-items: center;
 		padding: var(--iconPadding);
-		background-color: var(--iconBackgroundColor);
 		font-size: var(--iconSize);
 	}
 
-	&:focus,
-	&:hover {
+	&:focus {
 		outline: none;
+		box-shadow: inset 0px 0px 7px var(--focusColor);
+	}
 
-		.d-button__icon {
-			background-color: var(--iconBackgroundColorHover);
-		}
-
-		.d-button__label {
-			background-color: var(--labelBackgroundColorHover);
-		}
+	&:hover {
+		background-color: var(--backgroundColorHover);
 	}
 
 	&:active {
-		.d-button__icon {
-			background-color: var(--iconBackgroundColorActive);
-		}
-
-		.d-button__label {
-			background-color: var(--labelBackgroundColorActive);
-		}
+		background-color: var(--backgroundColorHover);
 	}
 }
 </style>
