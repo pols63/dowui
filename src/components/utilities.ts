@@ -764,9 +764,9 @@ export const Utilities = {
 			let a: number | null = match[4] ? parseInt(match[4], 16) : null
 
 			if (light != null) {
-				r = Math.min(Math.max(0, r + Math.round((light) * 255)), 255)
-				g = Math.min(Math.max(0, g + Math.round((light) * 255)), 255)
-				b = Math.min(Math.max(0, b + Math.round((light) * 255)), 255)
+				r = Math.min(Math.max(0, r + Math.round(Math.abs(light) * ((light > 0 ? 255 : 0) - r))), 255)
+				g = Math.min(Math.max(0, g + Math.round(Math.abs(light) * ((light > 0 ? 255 : 0) - g))), 255)
+				b = Math.min(Math.max(0, b + Math.round(Math.abs(light) * ((light > 0 ? 255 : 0) - b))), 255)
 			}
 
 			if (alpha != null && alpha >= 0 && alpha <= 1) {

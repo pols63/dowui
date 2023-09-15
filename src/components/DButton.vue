@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Utilities, Colors, type BoundBorders } from './utilities'
+import { Utilities, Colors } from './utilities'
 
 export enum IconPosition {
 	top = 'top',
@@ -9,49 +9,79 @@ export enum IconPosition {
 }
 
 export type Appearance = {
-	padding: number
-	iconPadding: BoundBorders
+	padding: number | string
+	borderRadius: number | string
+	borderColor: string
+	color: string
+	/* Icon */
+	iconPadding: number | string
 	iconPosition: IconPosition,
 	iconSize: number
-	labelPadding: BoundBorders
-	color: string
-	backgroundColor: string | string[]
-	borderRadius: number
-	borderColor: string
-	backLight: boolean
-	invert: boolean
+	iconBackgroundColor: string
+	iconBackgroundColorHover: string
+	iconBackgroundColorActive: string
+	/* Label */
+	labelPadding: number | string
+	labelBackgroundColor: string
+	labelBackgroundColorHover: string
+	labelBackgroundColorActive: string
 }
 
-export type AppearanceProfiles = Record<keyof typeof Colors, Appearance>
-
-export const defaultAppearance: AppearanceProfiles = (() => {
+export const defaultAppearance: Record<string, Appearance> = (() => {
 	const result: Record<string, Appearance> = {}
 	for (const color in Colors) {
-		let colorValue = (Colors as Record<string, string>)[color]
-		if (['lime', 'gold'].includes(color)) {
-			colorValue = Utilities.Color.calculate(colorValue, { light: -0.15 })
+		let colorValue0 = (Colors as Record<string, string>)[color]
+		if (['lime'].includes(color)) {
+			colorValue0 = Utilities.Color.calculate(colorValue0, { light: -0.2 })
+		} else if (['gold'].includes(color)) {
+			colorValue0 = Utilities.Color.calculate(colorValue0, { light: -0.2 })
 		}
-		const colorValue1 = Utilities.Color.calculate(colorValue, { light: 0.05 })
-		const colorValue2 = Utilities.Color.calculate(colorValue, { light: -0.1 })
-		let fontColor = 'white'
-		// if (['lime', 'gold'].includes(color)) {
-		// 	fontColor = 'black'
-		// }
+		const colorValue1 = Utilities.Color.calculate(colorValue0, { light: -0.2 })
+		const colorValue2 = Utilities.Color.calculate(colorValue0, { light: -0.1 })
+		const colorValue3 = Utilities.Color.calculate(colorValue0, { light: 0.1 })
+		const colorValue4 = Utilities.Color.calculate(colorValue0, { light: 0.2 })
 		result[color] = {
 			padding: 2,
-			labelPadding: 5,
-			iconPadding: 5,
-			iconPosition: IconPosition.left,
-			iconSize: 18,
-			color: fontColor,
-			backgroundColor: [colorValue1, colorValue2],
-			borderColor: colorValue,
 			borderRadius: 4,
-			backLight: false,
-			invert: false
+			borderColor: 'transparent',
+			color: 'white',
+			/* Icon */
+			iconPadding: 5,
+			iconPosition: IconPosition.bottom,
+			iconSize: 24,
+			iconBackgroundColor: colorValue4,
+			iconBackgroundColorHover: colorValue3,
+			iconBackgroundColorActive: colorValue0,
+			/* Label */
+			labelPadding: 5,
+			labelBackgroundColor: colorValue0,
+			labelBackgroundColorHover: colorValue2,
+			labelBackgroundColorActive: colorValue1,
+		}
+
+		const colorValue5 = Utilities.Color.calculate(colorValue0, { light: 0.85 })
+		const colorValue6 = Utilities.Color.calculate(colorValue0, { light: 0.9 })
+		const colorValue7 = Utilities.Color.calculate(colorValue0, { light: 0.95 })
+		result['invert-' + color] = {
+			padding: 2,
+			borderRadius: 4,
+			borderColor: colorValue0,
+			color: colorValue0,
+			/* Icon */
+			iconPadding: 5,
+			iconPosition: IconPosition.bottom,
+			iconSize: 18,
+			iconBackgroundColor: colorValue7,
+			iconBackgroundColorHover: colorValue6,
+			iconBackgroundColorActive: colorValue5,
+			/* Label */
+			labelPadding: 5,
+			labelBackgroundColor: 'white',
+			labelBackgroundColorHover: colorValue7,
+			labelBackgroundColorActive: colorValue6,
 		}
 	}
-	return result as AppearanceProfiles
+	return result
 })()
 
 export default {
@@ -60,13 +90,15 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive } from 'vue'
+import { computed, useSlots } from 'vue'
 import DBaseButton from './DBaseButton.vue'
 import DIcon from './DIcon.vue'
 
+const slots = useSlots()
+
 const props = withDefaults(defineProps<{
 	appearance?: Partial<Appearance>
-	defaultAppearance?: keyof typeof Colors
+	defaultAppearance?: string
 	type?: 'button' | 'submit'
 	focusable?: boolean
 	icon?: string
@@ -85,76 +117,49 @@ const _appearance = computed(() => {
 	}
 })
 
-/* Estilos según los valores encontrados en appearance */
-const dButtonStyle = computed(() => {
-	const _backgroundColor = _appearance.value.backgroundColor
-
-	let background = ''
-	if (!_appearance.value.invert && _backgroundColor instanceof Array && _backgroundColor.length > 1) {
-		background = 'linear-gradient(135deg,' + _backgroundColor.join(',') + ')'
-	}
-
-	let backgroundColor = ''
-	if ((_backgroundColor instanceof Array && _backgroundColor.length == 1)) {
-		backgroundColor = _backgroundColor[0]
-	} else if (typeof _backgroundColor == 'string') {
-		backgroundColor = _backgroundColor
-	} else if (_appearance.value.invert) {
-		backgroundColor = 'white'
-	}
-
-	let color = _appearance.value.color
-	if (_appearance.value.invert) {
-		color = _appearance.value.borderColor
-	}
-
-	let insetShadow = 'white'
-	if (_appearance.value.invert) {
-		insetShadow = _appearance.value.borderColor
-	}
-
-	return {
-		background,
-		backgroundColor,
-		color,
-		padding: _appearance.value.padding + 'px',
-		borderRadius: _appearance.value.borderRadius + 'px',
-		'--insetShadow': insetShadow,
-	}
-})
+const iconSlotIsEmpty = computed(() => Utilities.Slot.isEmpty(slots.icon))
 
 const gridTemplateAreas = computed(() => {
-	switch (_appearance.value.iconPosition) {
-		case IconPosition.top:
-			return "'icon' 'label'"
-		case IconPosition.bottom:
-			return "'label' 'icon'"
-		case IconPosition.left:
-			return "'icon label'"
-		case IconPosition.right:
-			return "'label icon'"
+	if (!props.icon && iconSlotIsEmpty.value) {
+		return '"label"'
+	} else {
+		switch (_appearance.value.iconPosition) {
+			case IconPosition.top:
+				return "'icon' 'label'"
+			case IconPosition.bottom:
+				return "'label' 'icon'"
+			case IconPosition.left:
+				return "'icon label'"
+			case IconPosition.right:
+				return "'label icon'"
+		}
 	}
 })
 </script>
 
 <template>
 	<DBaseButton :icon="icon" :type="type" :focusable="focusable" class="d-button" :style="{
-		...dButtonStyle,
-		border: '1px solid ' + _appearance.borderColor,
-		padding: _appearance.padding + 'px',
-		borderRadius: _appearance.borderRadius + 'px'
+		'--padding': _appearance.padding + (typeof _appearance.padding == 'number' ? 'px' : ''),
+		'--borderRadius': _appearance.borderRadius + (typeof _appearance.borderRadius == 'number' ? 'px' : ''),
+		'--borderColor': _appearance.borderColor,
+		'--color': _appearance.color,
+		'--iconPadding': _appearance.iconPadding + (typeof _appearance.iconPadding == 'number' ? 'px' : ''),
+		'--iconSize': _appearance.iconSize + (typeof _appearance.iconSize == 'number' ? 'px' : ''),
+		'--iconBackgroundColor': _appearance.iconBackgroundColor,
+		'--iconBackgroundColorHover': _appearance.iconBackgroundColorHover,
+		'--iconBackgroundColorActive': _appearance.iconBackgroundColorActive,
+		'--labelPadding': _appearance.labelPadding + (typeof _appearance.labelPadding == 'number' ? 'px' : ''),
+		'--labelBackgroundColor': _appearance.labelBackgroundColor,
+		'--labelBackgroundColorHover': _appearance.labelBackgroundColorHover,
+		'--labelBackgroundColorActive': _appearance.labelBackgroundColorActive,
+		gridTemplateAreas: gridTemplateAreas
 	}">
-		<span class="d-button__light" v-if="_appearance.backLight" :style="dButtonStyle"></span>
-		<span class="d-button__icon" v-if="!Utilities.Slot.isEmpty($slots.icon) || icon" :style="{
-			padding: Utilities.Borders.getBoundBordersString(_appearance.iconPadding),
-			fontSize: _appearance.iconSize + 'px'
-		}">
+		<span class="d-button__border"></span>
+		<span class="d-button__icon" v-if="!Utilities.Slot.isEmpty($slots.icon) || icon">
 			<DIcon :icon="icon"></DIcon>
 			<slot name="icon" v-if="!Utilities.Slot.isEmpty($slots.icon) && !icon"></slot>
 		</span>
-		<span class="d-button__label" :style="{
-			padding: _appearance.labelPadding + 'px'
-		}">
+		<span class="d-button__label">
 			<slot></slot>
 		</span>
 	</DBaseButton>
@@ -162,26 +167,26 @@ const gridTemplateAreas = computed(() => {
 
 <style lang="scss">
 .d-button {
-	border: none;
 	position: relative;
+	padding: 0px;
+	border: none;
+	color: var(--color);
 	box-sizing: border-box;
 	display: inline-grid;
 	grid-auto-flow: column;
-	grid-template-areas: 'icon label';
 	align-items: stretch;
-	transition: all 0.2s ease;
+	background-color: var(--labelBackgroundColor);
+	border-radius: var(--borderRadius);
+	overflow: hidden;
 
-	.d-button__light {
+	.d-button__border {
 		position: absolute;
-		top: 5px;
-		bottom: -3px;
-		left: 5px;
-		right: 5px;
-		z-index: -1;
-		border-radius: 30%;
-		filter: blur(5px);
-		opacity: 0.7;
-		transition: all 0.2s ease;
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		border-radius: var(--borderRadius);
+		border: 1px solid var(--borderColor);
 	}
 
 	.d-button__label {
@@ -189,29 +194,39 @@ const gridTemplateAreas = computed(() => {
 		grid-area: label;
 		align-items: center;
 		justify-items: center;
+		padding: var(--labelPadding);
+		background-color: var(--labelBackgroundColor);
 	}
 
 	.d-button__icon {
 		display: grid;
-		grid-area: icon;
 		align-items: center;
 		justify-items: center;
+		padding: var(--iconPadding);
+		background-color: var(--iconBackgroundColor);
+		font-size: var(--iconSize);
 	}
 
-	&:focus, &:hover {
+	&:focus,
+	&:hover {
 		outline: none;
-		box-shadow: inset 0px 0px 10px var(--insetShadow);
 
-		.d-button__light {
-			opacity: 1;
+		.d-button__icon {
+			background-color: var(--iconBackgroundColorHover);
+		}
+
+		.d-button__label {
+			background-color: var(--labelBackgroundColorHover);
 		}
 	}
 
 	&:active {
-		box-shadow: inset 0px 0px 10px 3px var(--insetShadow);
+		.d-button__icon {
+			background-color: var(--iconBackgroundColorActive);
+		}
 
-		.d-button__light {
-			opacity: 1;
+		.d-button__label {
+			background-color: var(--labelBackgroundColorActive);
 		}
 	}
 }

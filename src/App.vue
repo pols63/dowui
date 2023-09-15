@@ -31,16 +31,16 @@ Object.defineProperties(window, {
 		<DButton icon="key" default-appearance="gold">Guardar</DButton>
 	</div>
 	<div class="section">
-		<DButton icon="key" :appearance="{ invert: true }">Guardar</DButton>
-		<DButton icon="key" default-appearance="red" :appearance="{ invert: true }">Guardar</DButton>
-		<DButton icon="key" default-appearance="green" :appearance="{ invert: true }">Guardar</DButton>
-		<DButton icon="key" default-appearance="skyBlue" :appearance="{ invert: true }">Guardar</DButton>
-		<DButton icon="key" default-appearance="yellow" :appearance="{ invert: true }">Guardar</DButton>
-		<DButton icon="key" default-appearance="gray" :appearance="{ invert: true }">Guardar</DButton>
-		<DButton icon="key" default-appearance="lime" :appearance="{ invert: true }">Guardar</DButton>
-		<DButton icon="key" default-appearance="brownie" :appearance="{ invert: true }">Guardar</DButton>
-		<DButton icon="key" default-appearance="purple" :appearance="{ invert: true }">Guardar</DButton>
-		<DButton icon="key" default-appearance="gold" :appearance="{ invert: true }">Guardar</DButton>
+		<DButton icon="key" default-appearance="invert-blue">Guardar</DButton>
+		<DButton icon="key" default-appearance="invert-red">Guardar</DButton>
+		<DButton icon="key" default-appearance="invert-green">Guardar</DButton>
+		<DButton icon="key" default-appearance="invert-skyBlue">Guardar</DButton>
+		<DButton icon="key" default-appearance="invert-yellow">Guardar</DButton>
+		<DButton icon="key" default-appearance="invert-gray">Guardar</DButton>
+		<DButton icon="key" default-appearance="invert-lime">Guardar</DButton>
+		<DButton icon="key" default-appearance="invert-brownie">Guardar</DButton>
+		<DButton icon="key" default-appearance="invert-purple">Guardar</DButton>
+		<DButton icon="key" default-appearance="invert-gold">Guardar</DButton>
 	</div>
 </template>
 
