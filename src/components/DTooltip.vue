@@ -1,6 +1,6 @@
 <script lang="ts">
 import { reactive } from 'vue'
-import { Helpers, type BoundBorders } from './helpers'
+import { Utilities, type BoundBorders } from './utilities'
 
 export enum Position {
 	top = 'top',
@@ -145,7 +145,7 @@ const calculatePosition = async () => {
 	/* Obtiene las coordenadas del objeto objetivo */
 	currentTargetElementClientRect = props.target.getBoundingClientRect()
 	
-	const margins = Helpers.getBoundBorders(props.appearance?.margin ?? _appearance.margin)
+	const margins = Utilities.Borders.getBoundBorders(props.appearance?.margin ?? _appearance.margin)
 	const arrowSize = props.appearance?.arrowSize ?? _appearance.arrowSize
 	const arrowColor = (props.appearance?.borderWidth ?? _appearance.borderWidth) ? (props.appearance?.borderColor ?? _appearance.borderColor) : (props.appearance?.backgroundColor ?? _appearance.backgroundColor)
 	const borderRadius = props.appearance?.borderRadius ?? _appearance.borderRadius
@@ -454,7 +454,7 @@ const focusuot = (event: FocusEvent) => {
 						top: contentElementCoords.y + 'px',
 						left: contentElementCoords.x + 'px',
 						backgroundColor: appearance?.backgroundColor ?? _appearance.backgroundColor,
-						padding: Helpers.getBoundBordersString(appearance?.padding ?? _appearance.padding),
+						padding: Utilities.Borders.getBoundBordersString(appearance?.padding ?? _appearance.padding),
 						borderRadius: (appearance?.borderRadius ?? _appearance.borderRadius) + 'px',
 					}">
 					<slot></slot>

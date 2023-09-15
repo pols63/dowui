@@ -1,5 +1,8 @@
+import { Comment, type Slot, type VNode } from 'vue'
 import type { TRecord } from './types'
 import DOMPurify from 'dompurify'
+
+export type BoundBorders = number | [number, number] | [number, number, number, number]
 
 export type Languages = 'spanish' | 'english'
 
@@ -11,6 +14,19 @@ const Days = {
 const Months = {
 	spanish: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
 	english: ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'],
+}
+
+export const Colors = {
+	blue: '#0d6efe',
+	gray: '#6c757e',
+	green: '#198755',
+	red: '#dc3546',
+	yellow: '#ffc108',
+	skyBlue: '#0cb9e1',
+	lime: '#8fff2c',
+	brownie: '#b66a49',
+	purple: '#F61AFC',
+	gold: '#edff2c',
 }
 
 export type IterationFunction<T> = (element: T, index: number) => boolean
@@ -736,6 +752,52 @@ export const Utilities = {
 				fileReader.readAsDataURL(file)
 			})
 		}
+	},
+	Color: {
+		calculate: (color: string, { light = null, alpha = null }: { light?: number | null, alpha?: number | null }) => {
+			const match = color.match(/^#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?$/i)
+			if (!match) throw new Error(`El valor de 'color' no tiene el formato de color correcto`)
+
+			let r: number = parseInt(match[1], 16)
+			let g: number = parseInt(match[2], 16)
+			let b: number = parseInt(match[3], 16)
+			let a: number | null = match[4] ? parseInt(match[4], 16) : null
+
+			if (light != null) {
+				r = Math.min(Math.max(0, r + Math.round((light) * 255)), 255)
+				g = Math.min(Math.max(0, g + Math.round((light) * 255)), 255)
+				b = Math.min(Math.max(0, b + Math.round((light) * 255)), 255)
+			}
+
+			if (alpha != null && alpha >= 0 && alpha <= 1) {
+				a = alpha * 255
+			}
+
+			return '#' + Utilities.padLeft(r.toString(16), 2) + Utilities.padLeft(g.toString(16), 2) + Utilities.padLeft(b.toString(16), 2) + (a ? Utilities.padLeft(a.toString(16), 2) : '')
+		}
+	},
+	Slot: {
+		isEmpty(slot: Slot | undefined | null, props: any = {}) {
+			const vnode: VNode | VNode[] | undefined | null = slot?.(props)
+			const asArray = Array.isArray(vnode) ? vnode : vnode != null ? [vnode] : []
+			return !vnode || asArray.every((vnode) => vnode.type === Comment || (typeof vnode.children == 'string' && vnode.children.trim() == ''))
+		}
+	},
+	Borders: {
+		getBoundBorders: (value?: null | BoundBorders): [number, number, number, number] => {
+			if (typeof value == 'number') {
+				return [value, value, value, value]
+			} else if (value == null) {
+				return [0, 0, 0, 0]
+			} else if (value.length == 2) {
+				return [value[0], value[1], value[0], value[1]]
+			} else {
+				return value
+			}
+		},
+		getBoundBordersString: (value?: null | BoundBorders): string => {
+			return Utilities.Borders.getBoundBorders(value).map(v => `${v}px`).join(' ')
+		},
 	},
 	monthName: (monthNumber: number, shortName = false, language: Languages = 'spanish'): string => {
 		const monthName = Months[language]?.[Math.abs(monthNumber - 1) % 12]
