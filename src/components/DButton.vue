@@ -15,47 +15,52 @@ export type Appearance = {
 	borderColor: string
 	color: string
 	focusColor: string
+	focusSize: number | string
 	backgroundColor: string
 	backgroundColorHover: string
 	clickColor: string
 	/* Icon */
 	iconPadding: number | string
-	iconPosition: IconPosition,
-	iconSize: number
+	iconPosition: IconPosition
+	iconSize: number | string
 	/* Label */
 	labelPadding: number | string
 }
 
 export const defaultAppearance: Record<string, Appearance> = (() => {
 	const result: Record<string, Appearance> = {}
+	const base = {
+		padding: 7,
+		gap: 7,
+		borderRadius: 4,
+		iconPadding: 0,
+		iconPosition: IconPosition.left,
+		iconSize: 18,
+		labelPadding: 0,
+		focusSize: 4,
+	}
 	for (const color in Colors) {
 		let colorValue0 = (Colors as Record<string, string>)[color]
-		// if (['lime'].includes(color)) {
-		// 	colorValue0 = Utilities.Color.calculate(colorValue0, { light: -0.2 })
-		// } else if (['gold'].includes(color)) {
-		// 	colorValue0 = Utilities.Color.calculate(colorValue0, { light: -0.2 })
-		// }
 		let fontColor = 'white'
 		if (['lime', 'gold'].includes(color)) {
 			fontColor = 'black'
 		}
 		const colorValue2 = Utilities.Color.calculate(colorValue0, { light: -0.1 })
+		let focusColor = ''
+		if (['lime', 'gold'].includes(color)) {
+			focusColor = Utilities.Color.calculate(colorValue0, { light: -0.1 })
+		} else {
+			focusColor = Utilities.Color.calculate(colorValue0, { light: 0.4 })
+		}
+
 		result[color] = {
-			padding: 7,
-			gap: 7,
-			borderRadius: 4,
+			...base,
 			borderColor: 'transparent',
 			color: fontColor,
-			focusColor: 'white',
+			focusColor,
 			backgroundColor: colorValue0,
 			backgroundColorHover: colorValue2,
 			clickColor: 'white',
-			/* Icon */
-			iconPadding: 0,
-			iconPosition: IconPosition.left,
-			iconSize: 18,
-			/* Label */
-			labelPadding: 0,
 		}
 
 		fontColor = colorValue0
@@ -64,21 +69,13 @@ export const defaultAppearance: Record<string, Appearance> = (() => {
 		}
 		const colorValue7 = Utilities.Color.calculate(fontColor, { light: 0.95 })
 		result['invert-' + color] = {
-			padding: 7,
-			gap: 7,
-			borderRadius: 4,
+			...base,
 			borderColor: fontColor,
 			color: fontColor,
-			focusColor: fontColor,
+			focusColor,
 			backgroundColor: 'white',
 			backgroundColorHover: colorValue7,
 			clickColor: fontColor,
-			/* Icon */
-			iconPadding: 0,
-			iconPosition: IconPosition.left,
-			iconSize: 18,
-			/* Label */
-			labelPadding: 0,
 		}
 	}
 	return result
@@ -172,7 +169,7 @@ const click = async (event: MouseEvent) => {
 	}
 
 	/* Obtiene las dimensiones del botón para escalar el punto creciente hasta un tamaño máximo */
-	const rect = (bodyElement.value?.$refs.element as HTMLElement).getClientRects()[0]
+	const rect = (bodyElement.value?.$refs.element as HTMLElement).getBoundingClientRect()
 	const maxWidth = rect.width * 2
 	const maxHeight = rect.height * 2
 	clickElement.size = Math.max(maxHeight, maxWidth) / 10
@@ -189,6 +186,7 @@ const click = async (event: MouseEvent) => {
 		'--borderColor': _appearance.borderColor,
 		'--color': _appearance.color,
 		'--focusColor': _appearance.focusColor,
+		'--focusSize': _appearance.focusSize + (typeof _appearance.focusSize == 'number' ? 'px' : ''),
 		'--backgroundColor': _appearance.backgroundColor,
 		'--backgroundColorHover': _appearance.backgroundColorHover,
 		'--iconPadding': _appearance.iconPadding + (typeof _appearance.iconPadding == 'number' ? 'px' : ''),
@@ -225,6 +223,8 @@ const click = async (event: MouseEvent) => {
 	background-color: var(--backgroundColor);
 	border-radius: var(--borderRadius);
 	overflow: hidden;
+	transition: all 0.2s;
+	outline: 0px solid var(--focusColor);
 
 	.d-button__click {
 		transform-origin: center;
@@ -276,15 +276,11 @@ const click = async (event: MouseEvent) => {
 	}
 
 	&:focus {
-		outline: none;
-		box-shadow: inset 0px 0px 7px var(--focusColor);
+		transition: all 0.2s;
+		outline: var(--focusSize) solid var(--focusColor);
 	}
 
 	&:hover {
-		background-color: var(--backgroundColorHover);
-	}
-
-	&:active {
 		background-color: var(--backgroundColorHover);
 	}
 }

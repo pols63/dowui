@@ -15,9 +15,24 @@ Object.defineProperties(window, {
 </script>
 
 <template>
-	<DBaseInput type="date" v-model:value="input" @error="console.log"></DBaseInput>
-	<DSelect></DSelect>
-	<DBaseButton icon="key">Guardar</DBaseButton>
+	<div class="section">
+		<DBaseInput type="date" v-model:value="input" @error="console.log"></DBaseInput>
+	</div>
+	<div class="section">
+		<DSelect default-appearance="blue"></DSelect>
+		<DSelect default-appearance="red"></DSelect>
+		<DSelect default-appearance="green"></DSelect>
+		<DSelect default-appearance="skyBlue"></DSelect>
+		<DSelect default-appearance="yellow"></DSelect>
+		<DSelect default-appearance="gray"></DSelect>
+		<DSelect default-appearance="lime"></DSelect>
+		<DSelect default-appearance="brownie"></DSelect>
+		<DSelect default-appearance="purple"></DSelect>
+		<DSelect default-appearance="gold"></DSelect>
+	</div>
+	<div class="section">
+		<DBaseButton icon="key">Guardar</DBaseButton>
+	</div>
 	<div class="section">
 		<DButton icon="key" @click="console.log('hola')">Guardar</DButton>
 		<DButton icon="key" default-appearance="red">Guardar</DButton>
@@ -84,6 +99,10 @@ Object.defineProperties(window, {
 @import '/dowuiicons/dowuiicons.css';
 
 .section {
-	padding: 20px;
+	display: grid;
+	grid-auto-flow: column;
+	justify-items: start;
+	gap: 10px;
+	padding: 10px;
 }
 </style>

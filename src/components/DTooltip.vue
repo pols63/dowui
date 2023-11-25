@@ -341,13 +341,13 @@ const calculatePosition = async () => {
 			case Position.bottom:
 				switch (align) {
 					case Align.start:
-						arrowElementCoords.x = contentElementCoords.x + borderRadius
+						arrowElementCoords.x = Math.max(currentTargetElementClientRect.x, contentElementCoords.x) + borderRadius
 						break
 					case Align.center:
-						arrowElementCoords.x = contentElementCoords.x + contentElementClientRect.width / 2 - arrowSize / 2
+						arrowElementCoords.x = Math.min(currentTargetElementClientRect.x + currentTargetElementClientRect.width / 2, contentElementCoords.x + contentElementClientRect.width / 2) - arrowSize / 2
 						break
 					case Align.end:
-						arrowElementCoords.x = contentElementCoords.x + contentElementClientRect.width - borderRadius - arrowSize
+						arrowElementCoords.x = Math.min(currentTargetElementClientRect.x + currentTargetElementClientRect.width, contentElementCoords.x + contentElementClientRect.width) - borderRadius - arrowSize
 						break
 				}
 				break
