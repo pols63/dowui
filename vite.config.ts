@@ -14,7 +14,7 @@ export default defineConfig({
 		/* Esto permite que todos los componentes de forma implícita importen el archivo 'helpers' */
 		preprocessorOptions: {
 			scss: {
-				additionalData: `@import '@/components/helpers';`
+				additionalData: `@import '@/helpers/helpers';`
 			}
 		}
 	},
