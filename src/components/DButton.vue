@@ -8,23 +8,27 @@ export enum IconPosition {
 	right = 'right',
 }
 
-export type Appearance = {
+export type Style = {
 	padding: number | string
 	gap: number | string
 	borderRadius: number | string
 	borderColor: string
 	color: string
-	focusColor: string
-	focusSize: number | string
-	backgroundColor: string
-	backgroundColorHover: string
-	clickColor: string
+	background: string | {
+		from: string
+		to: string
+	}
 	/* Icon */
-	iconPadding: number | string
 	iconPosition: IconPosition
 	iconSize: number | string
-	/* Label */
-	labelPadding: number | string
+}
+
+export type Appearance = {
+	class: keyof typeof Colors
+	default: Style
+	hover: Style
+	active: Style
+	disabled: Style
 }
 
 export const defaultAppearance: Record<string, Appearance> = (() => {
