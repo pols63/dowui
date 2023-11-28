@@ -29,6 +29,8 @@ export const Colors = {
 	gold: '#edff2c',
 }
 
+export type ColorsKey = keyof typeof Colors
+
 export type IterationFunction<T> = (element: T, index: number) => boolean
 
 export type ToMatch = {

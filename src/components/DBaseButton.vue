@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<{
 
 const element = ref<HTMLElement>()
 const active = ref<boolean>(true)
-let interval: number
+let interval: ReturnType<typeof setInterval>
 
 watch(() => props.disabled, (newValue) => {
 	clearInterval(interval)

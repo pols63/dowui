@@ -97,4 +97,4 @@ const _appearance = computed(() => {
 		justify-self: stretch;
 	}
 }
-</style>
+</style>@/core/utilities

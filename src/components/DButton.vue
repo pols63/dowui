@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Utilities, Colors } from '@/helpers/utilities'
+import { Utilities, Colors, type ColorsKey } from '@/core/utilities'
 
 export enum IconPosition {
 	top = 'top',
@@ -9,78 +9,76 @@ export enum IconPosition {
 }
 
 export type Style = {
-	padding: number | string
-	gap: number | string
-	borderRadius: number | string
-	borderColor: string
-	color: string
-	background: string | {
+	padding?: number | string
+	gap?: number | string
+	border: {
+		radius?: number | string
+		color?: string
+	}
+	backgroundColor?: string | {
 		from: string
 		to: string
 	}
-	/* Icon */
-	iconPosition: IconPosition
-	iconSize: number | string
-}
-
-export type Appearance = {
-	class: keyof typeof Colors
-	default: Style
-	hover: Style
-	active: Style
-	disabled: Style
-}
-
-export const defaultAppearance: Record<string, Appearance> = (() => {
-	const result: Record<string, Appearance> = {}
-	const base = {
-		padding: 7,
-		gap: 7,
-		borderRadius: 4,
-		iconPadding: 0,
-		iconPosition: IconPosition.left,
-		iconSize: 18,
-		labelPadding: 0,
-		focusSize: 4,
+	font?: {
+		size?: number
+		color?: string
 	}
-	for (const color in Colors) {
-		let colorValue0 = (Colors as Record<string, string>)[color]
-		let fontColor = 'white'
-		if (['lime', 'gold'].includes(color)) {
-			fontColor = 'black'
-		}
-		const colorValue2 = Utilities.Color.calculate(colorValue0, { light: -0.1 })
-		let focusColor = ''
-		if (['lime', 'gold'].includes(color)) {
-			focusColor = Utilities.Color.calculate(colorValue0, { light: -0.1 })
-		} else {
-			focusColor = Utilities.Color.calculate(colorValue0, { light: 0.4 })
-		}
+	icon?: {
+		position?: IconPosition
+		size?: number | string
+	},
+}
 
-		result[color] = {
-			...base,
-			borderColor: 'transparent',
-			color: fontColor,
-			focusColor,
-			backgroundColor: colorValue0,
-			backgroundColorHover: colorValue2,
-			clickColor: 'white',
-		}
+export type Appearance = Record<'light' | 'normal' | 'dark', {
+	default?: Style
+	hover?: Style
+	active?: Style
+	disabled?: Style
+}>
 
-		fontColor = colorValue0
-		if (['lime', 'gold'].includes(color)) {
-			fontColor = Utilities.Color.calculate(colorValue0, { light: -0.2 })
+export const baseStyle: Style = {
+	padding: 7,
+	gap: 7,
+	border: {
+		radius: 4,
+	},
+	font: {
+		size: 12,
+	},
+	icon: {
+		position: IconPosition.left,
+		size: 18
+	},
+}
+
+export const baseAppearance: Record<ColorsKey, Appearance> = (() => {
+	const result: Record<string, Appearance> = {}
+	for (const colorName in Colors) {
+		const colorValue = Colors[colorName as ColorsKey]
+		const appearance: Appearance = {
+			light: {
+				default: {
+					border: {
+						color: Utilities.Color.calculate(colorValue, { light: -0.3 })
+					}
+				},
+			},
+			normal: {
+				default: {
+					border: {
+						color: Utilities.Color.calculate(colorValue, { light: -0.3 })
+					}
+				}
+			},
+			dark: {
+				default: {
+					border: {
+						color: Utilities.Color.calculate(colorValue, { light: -0.5 })
+					}
+				}
+			}
 		}
-		const colorValue7 = Utilities.Color.calculate(fontColor, { light: 0.95 })
-		result['invert-' + color] = {
-			...base,
-			borderColor: fontColor,
-			color: fontColor,
-			focusColor,
-			backgroundColor: 'white',
-			backgroundColorHover: colorValue7,
-			clickColor: fontColor,
-		}
+		result[colorName] = appearance
 	}
 	return result
 })()
@@ -100,8 +98,8 @@ const emit = defineEmits<{
 }>()
 
 const props = withDefaults(defineProps<{
-	appearance?: Partial<Appearance>
-	defaultAppearance?: string
+	color: ColorsKey
+	mode: 'light' | 'normal' | 'dark'
 	type?: 'button' | 'submit'
 	focusable?: boolean
 	icon?: string
@@ -138,22 +136,22 @@ const _appearance = computed(() => {
 const iconSlotIsEmpty = computed(() => Utilities.Slot.isEmpty(slots.icon))
 const labelSlotIsEmpty = computed(() => Utilities.Slot.isEmpty(slots.default))
 
-const gridTemplateAreas = computed(() => {
-	if (!props.icon && iconSlotIsEmpty.value) {
-		return '"label"'
-	} else {
-		switch (_appearance.value.iconPosition) {
-			case IconPosition.top:
-				return "'icon' 'label'"
-			case IconPosition.bottom:
-				return "'label' 'icon'"
-			case IconPosition.left:
-				return "'icon label'"
-			case IconPosition.right:
-				return "'label icon'"
-		}
-	}
-})
+// const gridTemplateAreas = computed(() => {
+// 	if (!props.icon && iconSlotIsEmpty.value) {
+// 		return '"label"'
+// 	} else {
+// 		switch (_appearance.value.iconPosition) {
+// 			case IconPosition.top:
+// 				return "'icon' 'label'"
+// 			case IconPosition.bottom:
+// 				return "'label' 'icon'"
+// 			case IconPosition.left:
+// 				return "'icon label'"
+// 			case IconPosition.right:
+// 				return "'label icon'"
+// 		}
+// 	}
+// })
 
 const click = async (event: MouseEvent) => {
 	clickElement.animating = false
@@ -288,4 +286,4 @@ const click = async (event: MouseEvent) => {
 		background-color: var(--backgroundColorHover);
 	}
 }
-</style>
+</style>@/core/utilities
