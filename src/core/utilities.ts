@@ -22,7 +22,7 @@ export const Colors = {
 	green: '#299765',
 	red: '#dc3546',
 	yellow: '#ffc108',
-	skyBlue: '#0cb9e1',
+	'sky-blue': '#0cb9e1',
 	lime: '#8fff2c',
 	brownie: '#b66a49',
 	purple: '#F61AFC',

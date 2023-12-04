@@ -1,16 +1,14 @@
 <script lang="ts">
-import { Utilities, Colors, type ColorsKey } from '@/core/utilities'
-
-export type IconPositions = 'top' | 'bottom' | 'left' | 'right'
-
-export type Modes = 'light' | 'normal' | 'dark'
+import { Utilities, type ColorsKey } from '@/core/utilities'
 
 export type Style = {
-	iconPosition?: IconPositions,
-	colorSchema?: keyof typeof Colors
-	mode?: Modes
+	iconPosition?: 'top' | 'bottom' | 'left' | 'right'
+	colorSchema?: ColorsKey
+	mode?: 'light' | 'normal' | 'dark'
 	bordered?: boolean
 	ghost?: boolean
+	iconBackground?: boolean
+	size?: 'small' | 'normal' | 'large'
 }
 
 export default {
@@ -56,11 +54,13 @@ const bodyElement = ref<InstanceType<typeof DBaseButton>>()
 const slots = useSlots()
 
 const iconSlotIsEmpty = computed(() => Utilities.Slot.isEmpty(slots.icon))
-// const labelSlotIsEmpty = computed(() => Utilities.Slot.isEmpty(slots.default))
+const labelSlotIsEmpty = computed(() => Utilities.Slot.isEmpty(slots.default))
 
 const gridTemplateAreas = computed(() => {
 	if (!props.icon && iconSlotIsEmpty.value) {
 		return '"label"'
+	} else if ((props.icon || !iconSlotIsEmpty.value) && labelSlotIsEmpty.value) {
+		return '"icon"'
 	} else {
 		switch (props.cStyle?.iconPosition ?? 'left') {
 			case 'top':
@@ -106,7 +106,12 @@ const click = async (event: MouseEvent) => {
 <template>
 	<DBaseButton :icon="icon" :type="type" :focusable="focusable" class="d-button" @click="click" ref="bodyElement" :style="{
 		gridTemplateAreas: gridTemplateAreas
-	}">
+	}" :class="[
+		'dc-color-' + (cStyle?.colorSchema ?? 'blue'),
+		'dc-mode-' + (cStyle?.mode ?? 'normal'),
+		'dc-icon-background-' + (cStyle?.iconBackground ?? true),
+		'dc-bordered-' + (cStyle?.bordered ?? true),
+	]">
 		<span class="d-button__click" :class="clickElement.animating ? 'animating' : ''" :style="{
 			'--x': clickElement.x,
 			'--y': clickElement.y,
@@ -123,20 +128,114 @@ const click = async (event: MouseEvent) => {
 </template>
 
 <style lang="scss">
+@mixin set-vars-light($color-name, $color) {
+	--background-from: white;
+	--shadow-color: #{calculate-color($color, 0, 0.75)};
+	--outline-hover: #{calculate-color($color, 0.5, 1)};
+	--outline-active: #{calculate-color($color, 0.3, 1)};
+	--click-color: #{$color};
+	@if ($color-name == lime or $color-name == yellow) {
+		--background-icon-color: #{calculate-color($color, -0.2, 0.5)};
+		--background-to: #{calculate-color($color, 0.6, 1)};
+		--border-color: #{calculate-color($color, -0.5, 1)};
+		--color: #{calculate-color($color, -0.5, 1)};
+	} @else {
+		--background-icon-color: #{calculate-color($color, 0.2, 0.5)};
+		--background-to: #{calculate-color($color, 0.8, 1)};
+		--border-color: #{calculate-color($color, -0.3, 1)};
+		--color: #{calculate-color($color, -0.3, 1)};
+	}
+}
+
+@mixin set-vars-normal($color-name, $color) {
+	--border-color: #{calculate-color($color, -0.3, 1)};
+	--background-from: #{$color};
+	--background-to: #{calculate-color($color, -0.2, 1)};
+	--shadow-color: #{calculate-color($color, 0, 0.75)};
+	--background-icon-color: #{calculate-color($color, -0.5, 0.5)};
+	--outline-hover: #{calculate-color($color, 0.5, 1)};
+	--outline-active: #{calculate-color($color, 0.3, 1)};
+	--click-color: white;
+	@if ($color-name == lime or $color-name == yellow) {
+		--color: black;
+	} @else {
+		--color: white;
+	}
+}
+
+@mixin set-vars-dark($color-name, $color) {
+	--border-color: #{calculate-color($color, -0.3, 1)};
+	--background-from: #{$color};
+	--background-to: #{calculate-color($color, -0.2, 1)};
+	--shadow-color: #{calculate-color($color, 0, 0.75)};
+	--background-icon-color: #{calculate-color($color, -0.4, 1)};
+	--outline-hover: #{calculate-color($color, 0.5, 1)};
+	--outline-active: #{calculate-color($color, 0.3, 1)};
+	--click-color: white;
+	@debug $color-name;
+	@if ($color-name == lime or $color-name == yellow) {
+		--color: black;
+	} @else {
+		--color: white;
+	}
+}
+
 .d-button {
 	position: relative;
-	padding: var(--padding);
 	border: 1px solid var(--borderColor);
-	color: var(--color);
 	box-sizing: border-box;
 	display: inline-grid;
 	grid-auto-flow: column;
 	align-items: stretch;
-	background-color: var(--backgroundColor);
-	border-radius: var(--borderRadius);
+	background: linear-gradient(180deg, var(--background-from), var(--background-to));
+	border-radius: 8px;
+	gap: 4px;
 	overflow: hidden;
-	transition: all 0.2s;
-	outline: 0px solid var(--focusColor);
+	transition: all 0.1s;
+	box-shadow: 0px 0px 5px var(--shadow-color);
+	outline: 0px solid transparent;
+
+	@each $color-name, $color in $colors {
+		&.dc-color-#{$color-name} {
+			&.dc-mode-light {
+				@include set-vars-light($color-name, $color);
+			}
+			&.dc-mode-normal {
+				@include set-vars-normal($color-name, $color);
+			}
+			&.dc-mode-dark {
+				@include set-vars-dark($color-name, $color);
+			}
+		}
+	}
+
+	&.dc-bordered {
+		&-true {
+			padding: 4px;
+			border: 1px solid var(--border-color);
+		}
+		&-false {
+			padding: 5px;
+			border: 0px solid transparent;
+		}
+	}
+
+	&.dc-icon-background {
+		&-true {
+			.d-button__icon {
+				background-color: var(--background-icon-color);
+			}
+		}
+		&-false {
+			.d-button__icon {
+				background-color: transparent;
+			}
+		}
+	}
+
+	&:hover, &:focus {
+		outline: 4px solid var(--outline-hover);
+	}
 
 	.d-button__click {
 		transform-origin: center;
@@ -146,7 +245,7 @@ const click = async (event: MouseEvent) => {
 		height: 20px;
 		border-radius: 50%;
 		position: absolute;
-		background: radial-gradient(var(--clickColor) 0%, var(--clickColor) 40%, transparent 90%);
+		background: radial-gradient(var(--click-color) 0%, var(--click-color) 40%, transparent 90%);
 		opacity: 0;
 		z-index: 1;
 
@@ -172,28 +271,22 @@ const click = async (event: MouseEvent) => {
 	}
 
 	.d-button__label {
+		padding: 0px 4px;
 		display: grid;
 		grid-area: label;
 		align-items: center;
 		justify-items: center;
-		padding: var(--labelPadding);
+		color: var(--color);
 	}
 
 	.d-button__icon {
 		display: grid;
 		align-items: center;
 		justify-items: center;
-		padding: var(--iconPadding);
-		font-size: var(--iconSize);
-	}
-
-	&:focus {
-		transition: all 0.2s;
-		outline: var(--focusSize) solid var(--focusColor);
-	}
-
-	&:hover {
-		background-color: var(--backgroundColorHover);
+		padding: 4px;
+		font-size: inherit;
+		color: var(--color);
+		border-radius: 5px;
 	}
 }
 </style>
