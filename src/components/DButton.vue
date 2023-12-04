@@ -111,6 +111,7 @@ const click = async (event: MouseEvent) => {
 		'dc-mode-' + (cStyle?.mode ?? 'normal'),
 		'dc-icon-background-' + (cStyle?.iconBackground ?? true),
 		'dc-bordered-' + (cStyle?.bordered ?? true),
+		'dc-ghost-' + (cStyle?.ghost ?? false),
 	]">
 		<span class="d-button__click" :class="clickElement.animating ? 'animating' : ''" :style="{
 			'--x': clickElement.x,
@@ -128,55 +129,83 @@ const click = async (event: MouseEvent) => {
 </template>
 
 <style lang="scss">
-@mixin set-vars-light($color-name, $color) {
+@mixin set-vars-light($color-name, $color, $ghost) {
 	--background-from: white;
-	--shadow-color: #{calculate-color($color, 0, 0.75)};
 	--outline-hover: #{calculate-color($color, 0.5, 1)};
-	--outline-active: #{calculate-color($color, 0.3, 1)};
 	--click-color: #{$color};
-	@if ($color-name == lime or $color-name == yellow) {
-		--background-icon-color: #{calculate-color($color, -0.2, 0.5)};
-		--background-to: #{calculate-color($color, 0.6, 1)};
-		--border-color: #{calculate-color($color, -0.5, 1)};
-		--color: #{calculate-color($color, -0.5, 1)};
+	@if $ghost == 1 {
+		--border-color: #{calculate-color($color, 0.4, 1)};
+		--color: #{calculate-color($color, 0.4, 1)};
+		@if ($color-name == lime or $color-name == yellow) {
+			--shadow-color: #{calculate-color($color, -0.2, 0.75)};
+		} @else {
+			--shadow-color: #{calculate-color($color, 0, 0.75)};
+		}
 	} @else {
-		--background-icon-color: #{calculate-color($color, 0.2, 0.5)};
-		--background-to: #{calculate-color($color, 0.8, 1)};
-		--border-color: #{calculate-color($color, -0.3, 1)};
-		--color: #{calculate-color($color, -0.3, 1)};
+		@if ($color-name == lime or $color-name == yellow) {
+			--shadow-color: #{calculate-color($color, -0.4, 0.75)};
+			--background-icon-color: #{calculate-color($color, -0.2, 0.5)};
+			--background-to: #{calculate-color($color, 0.6, 1)};
+			--border-color: #{calculate-color($color, -0.5, 1)};
+			--color: #{calculate-color($color, -0.5, 1)};
+		} @else {
+			--shadow-color: #{calculate-color($color, 0, 0.75)};
+			--background-icon-color: #{calculate-color($color, 0.2, 0.5)};
+			--background-to: #{calculate-color($color, 0.8, 1)};
+			--border-color: #{calculate-color($color, -0.3, 1)};
+			--color: #{calculate-color($color, -0.3, 1)};
+		}
 	}
 }
 
-@mixin set-vars-normal($color-name, $color) {
-	--border-color: #{calculate-color($color, -0.3, 1)};
+@mixin set-vars-normal($color-name, $color, $ghost) {
 	--background-from: #{$color};
 	--background-to: #{calculate-color($color, -0.2, 1)};
-	--shadow-color: #{calculate-color($color, 0, 0.75)};
 	--background-icon-color: #{calculate-color($color, -0.5, 0.5)};
 	--outline-hover: #{calculate-color($color, 0.5, 1)};
-	--outline-active: #{calculate-color($color, 0.3, 1)};
-	--click-color: white;
-	@if ($color-name == lime or $color-name == yellow) {
-		--color: black;
+	@if $ghost == 1 {
+		@if ($color-name == lime or $color-name == yellow) {
+			--border-color: #{calculate-color($color, -0.4)};
+			--color: #{calculate-color($color, -0.4)};
+		} @else {
+			--border-color: #{$color};
+			--color: #{$color};
+		}
+		--click-color: #{$color};
 	} @else {
-		--color: white;
+		--border-color: #{calculate-color($color, -0.3, 1)};
+		--click-color: white;
+		@if ($color-name == lime or $color-name == yellow) {
+			--color: black;
+		} @else {
+			--color: white;
+		}
+	}
+	@if ($color-name == lime or $color-name == yellow) {
+		--shadow-color: #{calculate-color($color, -0.4, 0.75)};
+	} @else {
+		--shadow-color: #{calculate-color($color, 0, 0.75)};
 	}
 }
 
-@mixin set-vars-dark($color-name, $color) {
-	--border-color: #{calculate-color($color, -0.3, 1)};
-	--background-from: #{$color};
-	--background-to: #{calculate-color($color, -0.2, 1)};
+@mixin set-vars-dark($color-name, $color, $ghost) {
+	--background-from: #{calculate-color($color, -0.3, 1)};
+	--background-to: #{calculate-color($color, -0.7, 1)};
 	--shadow-color: #{calculate-color($color, 0, 0.75)};
-	--background-icon-color: #{calculate-color($color, -0.4, 1)};
+	--background-icon-color: #{calculate-color($color, -0.8, 0.5)};
 	--outline-hover: #{calculate-color($color, 0.5, 1)};
-	--outline-active: #{calculate-color($color, 0.3, 1)};
 	--click-color: white;
-	@debug $color-name;
-	@if ($color-name == lime or $color-name == yellow) {
-		--color: black;
+	@if $ghost == 1 {
+		--border-color: #{calculate-color($color, -0.6, 1)};
+		--color: #{calculate-color($color, -0.6)};
 	} @else {
+		--border-color: #{calculate-color($color, -0.7, 1)};
 		--color: white;
+	}
+	@if ($color-name == lime or $color-name == yellow) {
+		--shadow-color: #{calculate-color($color, -0.4, 0.75)};
+	} @else {
+		--shadow-color: #{calculate-color($color, 0, 0.75)};
 	}
 }
 
@@ -187,30 +216,70 @@ const click = async (event: MouseEvent) => {
 	display: inline-grid;
 	grid-auto-flow: column;
 	align-items: stretch;
-	background: linear-gradient(180deg, var(--background-from), var(--background-to));
 	border-radius: 8px;
-	gap: 4px;
 	overflow: hidden;
 	transition: all 0.1s;
-	box-shadow: 0px 0px 5px var(--shadow-color);
 	outline: 0px solid transparent;
 
 	@each $color-name, $color in $colors {
 		&.dc-color-#{$color-name} {
-			&.dc-mode-light {
-				@include set-vars-light($color-name, $color);
+			&.dc-ghost {
+				&-true {
+					&.dc-mode-light {
+						@include set-vars-light($color-name, $color, 1);
+					}
+					&.dc-mode-normal {
+						@include set-vars-normal($color-name, $color, 1);
+					}
+					&.dc-mode-dark {
+						@include set-vars-dark($color-name, $color, 1);
+					}
+				}
+				&-false {
+					&.dc-mode-light {
+						@include set-vars-light($color-name, $color, 0);
+					}
+					&.dc-mode-normal {
+						@include set-vars-normal($color-name, $color, 0);
+					}
+					&.dc-mode-dark {
+						@include set-vars-dark($color-name, $color, 0);
+					}
+				}
 			}
-			&.dc-mode-normal {
-				@include set-vars-normal($color-name, $color);
+		}
+	}
+
+	&.dc-ghost {
+		&-true {
+			background: none;
+			
+			.d-button__icon {
+				background-color: none;
 			}
-			&.dc-mode-dark {
-				@include set-vars-dark($color-name, $color);
+		}
+		&-false {
+			box-shadow: 0px 0px 5px var(--shadow-color);
+			background: linear-gradient(180deg, var(--background-from), var(--background-to));
+			
+			&.dc-icon-background {
+				&-true {
+					.d-button__icon {
+						background-color: var(--background-icon-color);
+					}
+				}
+				&-false {
+					.d-button__icon {
+						background-color: none;
+					}
+				}
 			}
 		}
 	}
 
 	&.dc-bordered {
 		&-true {
+			box-shadow: 0px 0px 5px var(--shadow-color);
 			padding: 4px;
 			border: 1px solid var(--border-color);
 		}
@@ -220,18 +289,6 @@ const click = async (event: MouseEvent) => {
 		}
 	}
 
-	&.dc-icon-background {
-		&-true {
-			.d-button__icon {
-				background-color: var(--background-icon-color);
-			}
-		}
-		&-false {
-			.d-button__icon {
-				background-color: transparent;
-			}
-		}
-	}
 
 	&:hover, &:focus {
 		outline: 4px solid var(--outline-hover);

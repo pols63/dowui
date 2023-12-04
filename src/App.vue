@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import DBaseInput from './components/DBaseInput.vue'
 import { ref } from 'vue'
-import DSelect from './components/DSelect.vue'
 import DBaseButton from './components/DBaseButton.vue'
 import DButton from './components/DButton.vue'
 
@@ -31,6 +29,18 @@ Object.defineProperties(window, {
 		<DButton icon="key" :c-style="{ colorSchema: 'gold' }">Guardar</DButton>
 	</div>
 	<div class="section">
+		<DButton icon="key" :c-style="{ colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
 		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'blue' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'red' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'green' }">Guardar</DButton>
@@ -41,6 +51,18 @@ Object.defineProperties(window, {
 		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'brownie' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'purple' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, colorSchema: 'gold' }"></DButton>
 	</div>
 	<div class="section">
 		<DButton icon="key" :c-style="{ iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
@@ -55,6 +77,18 @@ Object.defineProperties(window, {
 		<DButton icon="key" :c-style="{ iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
 	</div>
 	<div class="section">
+		<DButton icon="key" :c-style="{ iconBackground: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ iconBackground: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ iconBackground: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ iconBackground: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ iconBackground: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ iconBackground: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ iconBackground: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ iconBackground: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ iconBackground: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ iconBackground: false, colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
 		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'red' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'green' }">Guardar</DButton>
@@ -65,6 +99,18 @@ Object.defineProperties(window, {
 		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'brownie' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'purple' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ bordered: false, iconBackground: false, colorSchema: 'gold' }"></DButton>
 	</div>
 	<div class="section">
 		<DButton :c-style="{ colorSchema: 'blue' }">Guardar</DButton>
@@ -91,6 +137,78 @@ Object.defineProperties(window, {
 		<DButton :c-style="{ bordered: false, colorSchema: 'gold' }">Guardar</DButton>
 	</div>
 	<div class="section">
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'red' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'green' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, bordered: false, colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
+		<DButton :c-style="{ ghost: true, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, colorSchema: 'red' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, colorSchema: 'green' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton :c-style="{ ghost: true, bordered: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, bordered: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, bordered: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, bordered: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, bordered: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, bordered: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, bordered: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, bordered: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, bordered: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, bordered: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
 		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'blue' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'red' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'green' }">Guardar</DButton>
@@ -101,6 +219,18 @@ Object.defineProperties(window, {
 		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'brownie' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'purple' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', colorSchema: 'gold' }"></DButton>
 	</div>
 	<div class="section">
 		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, colorSchema: 'blue' }">Guardar</DButton>
@@ -115,6 +245,18 @@ Object.defineProperties(window, {
 		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, colorSchema: 'gold' }">Guardar</DButton>
 	</div>
 	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
 		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'red' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'green' }">Guardar</DButton>
@@ -127,6 +269,18 @@ Object.defineProperties(window, {
 		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
 	</div>
 	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
 		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'red' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'green' }">Guardar</DButton>
@@ -137,6 +291,18 @@ Object.defineProperties(window, {
 		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'brownie' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'purple' }">Guardar</DButton>
 		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'gold' }"></DButton>
 	</div>
 	<div class="section">
 		<DButton :c-style="{ mode: 'light', iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
@@ -163,28 +329,316 @@ Object.defineProperties(window, {
 		<DButton :c-style="{ mode: 'light', bordered: false, iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
 	</div>
 	<div class="section">
-		<DButton icon="key" default-appearance="blue"></DButton>
-		<DButton icon="key" default-appearance="red"></DButton>
-		<DButton icon="key" default-appearance="green"></DButton>
-		<DButton icon="key" default-appearance="skyBlue"></DButton>
-		<DButton icon="key" default-appearance="yellow"></DButton>
-		<DButton icon="key" default-appearance="gray"></DButton>
-		<DButton icon="key" default-appearance="lime"></DButton>
-		<DButton icon="key" default-appearance="brownie"></DButton>
-		<DButton icon="key" default-appearance="purple"></DButton>
-		<DButton icon="key" default-appearance="gold"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'red' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'green' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'lime' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'purple' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'gold' }">Guardar</DButton>
 	</div>
 	<div class="section">
-		<DButton default-appearance="invert-blue">Guardar</DButton>
-		<DButton default-appearance="invert-red">Guardar</DButton>
-		<DButton default-appearance="invert-green">Guardar</DButton>
-		<DButton default-appearance="invert-skyBlue">Guardar</DButton>
-		<DButton default-appearance="invert-yellow">Guardar</DButton>
-		<DButton default-appearance="invert-gray">Guardar</DButton>
-		<DButton default-appearance="invert-lime">Guardar</DButton>
-		<DButton default-appearance="invert-brownie">Guardar</DButton>
-		<DButton default-appearance="invert-purple">Guardar</DButton>
-		<DButton default-appearance="invert-gold">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
+		<DButton :c-style="{ ghost: true, mode: 'light', colorSchema: 'blue' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', colorSchema: 'red' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', colorSchema: 'green' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', colorSchema: 'gray' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', colorSchema: 'lime' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', colorSchema: 'purple' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton :c-style="{ ghost: true, mode: 'light', bordered: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'red' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'green' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'lime' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'purple' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'red' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'green' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'lime' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'purple' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ ghost: true, mode: 'dark', colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'red' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'green' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'sky-blue' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'yellow' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'gray' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'lime' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'brownie' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'purple' }"></DButton>
+		<DButton icon="key" :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'gold' }"></DButton>
+	</div>
+	<div class="section">
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
+	</div>
+	<div class="section">
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'blue' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'red' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'green' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'sky-blue' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'yellow' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'gray' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'lime' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'brownie' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'purple' }">Guardar</DButton>
+		<DButton :c-style="{ mode: 'dark', bordered: false, iconBackground: false, colorSchema: 'gold' }">Guardar</DButton>
 	</div>
 </template>
 
