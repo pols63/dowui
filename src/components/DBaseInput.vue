@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Utilities } from '@/helpers/utilities'
+import { Utilities } from '@/core/utilities'
 </script>
 
 <script setup lang="ts">

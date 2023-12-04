@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Utilities, Colors } from '@/helpers/utilities'
+import { Utilities, Colors } from '@/core/utilities'
 
 export type Appearance = {
 	padding: number | string

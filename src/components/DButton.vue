@@ -1,87 +1,17 @@
 <script lang="ts">
 import { Utilities, Colors, type ColorsKey } from '@/core/utilities'
 
-export enum IconPosition {
-	top = 'top',
-	bottom = 'bottom',
-	left = 'left',
-	right = 'right',
-}
+export type IconPositions = 'top' | 'bottom' | 'left' | 'right'
+
+export type Modes = 'light' | 'normal' | 'dark'
 
 export type Style = {
-	padding?: number | string
-	gap?: number | string
-	border: {
-		radius?: number | string
-		color?: string
-	}
-	backgroundColor?: string | {
-		from: string
-		to: string
-	}
-	font?: {
-		size?: number
-		color?: string
-	}
-	icon?: {
-		position?: IconPosition
-		size?: number | string
-	},
+	iconPosition?: IconPositions,
+	colorSchema?: keyof typeof Colors
+	mode?: Modes
+	bordered?: boolean
+	ghost?: boolean
 }
-
-export type Appearance = Record<'light' | 'normal' | 'dark', {
-	default?: Style
-	hover?: Style
-	active?: Style
-	disabled?: Style
-}>
-
-export const baseStyle: Style = {
-	padding: 7,
-	gap: 7,
-	border: {
-		radius: 4,
-	},
-	font: {
-		size: 12,
-	},
-	icon: {
-		position: IconPosition.left,
-		size: 18
-	},
-}
-
-export const baseAppearance: Record<ColorsKey, Appearance> = (() => {
-	const result: Record<string, Appearance> = {}
-	for (const colorName in Colors) {
-		const colorValue = Colors[colorName as ColorsKey]
-		const appearance: Appearance = {
-			light: {
-				default: {
-					border: {
-						color: Utilities.Color.calculate(colorValue, { light: -0.3 })
-					}
-				},
-			},
-			normal: {
-				default: {
-					border: {
-						color: Utilities.Color.calculate(colorValue, { light: -0.3 })
-					}
-				}
-			},
-			dark: {
-				default: {
-					border: {
-						color: Utilities.Color.calculate(colorValue, { light: -0.5 })
-					}
-				}
-			}
-		}
-		result[colorName] = appearance
-	}
-	return result
-})()
 
 export default {
 	inheritAttrs: false
@@ -98,12 +28,11 @@ const emit = defineEmits<{
 }>()
 
 const props = withDefaults(defineProps<{
-	color: ColorsKey
-	mode: 'light' | 'normal' | 'dark'
 	type?: 'button' | 'submit'
 	focusable?: boolean
 	icon?: string
 	preventDoubleClick?: boolean
+	cStyle?: Style
 }>(), {
 	defaultAppearance: 'blue',
 	type: 'button',
@@ -126,32 +55,26 @@ const bodyElement = ref<InstanceType<typeof DBaseButton>>()
 
 const slots = useSlots()
 
-const _appearance = computed(() => {
-	return {
-		...defaultAppearance[props.defaultAppearance],
-		...props.appearance
+const iconSlotIsEmpty = computed(() => Utilities.Slot.isEmpty(slots.icon))
+// const labelSlotIsEmpty = computed(() => Utilities.Slot.isEmpty(slots.default))
+
+const gridTemplateAreas = computed(() => {
+	if (!props.icon && iconSlotIsEmpty.value) {
+		return '"label"'
+	} else {
+		switch (props.cStyle?.iconPosition ?? 'left') {
+			case 'top':
+				return "'icon' 'label'"
+			case 'bottom':
+				return "'label' 'icon'"
+			case 'left':
+				return "'icon label'"
+			case 'right':
+				return "'label icon'"
+		}
+		return ''
 	}
 })
-
-const iconSlotIsEmpty = computed(() => Utilities.Slot.isEmpty(slots.icon))
-const labelSlotIsEmpty = computed(() => Utilities.Slot.isEmpty(slots.default))
-
-// const gridTemplateAreas = computed(() => {
-// 	if (!props.icon && iconSlotIsEmpty.value) {
-// 		return '"label"'
-// 	} else {
-// 		switch (_appearance.value.iconPosition) {
-// 			case IconPosition.top:
-// 				return "'icon' 'label'"
-// 			case IconPosition.bottom:
-// 				return "'label' 'icon'"
-// 			case IconPosition.left:
-// 				return "'icon label'"
-// 			case IconPosition.right:
-// 				return "'label icon'"
-// 		}
-// 	}
-// })
 
 const click = async (event: MouseEvent) => {
 	clickElement.animating = false
@@ -182,19 +105,6 @@ const click = async (event: MouseEvent) => {
 
 <template>
 	<DBaseButton :icon="icon" :type="type" :focusable="focusable" class="d-button" @click="click" ref="bodyElement" :style="{
-		'--padding': _appearance.padding + (typeof _appearance.padding == 'number' ? 'px' : ''),
-		'gap': labelSlotIsEmpty ? '0px' : (_appearance.gap + (typeof _appearance.gap == 'number' ? 'px' : '')),
-		'--borderRadius': _appearance.borderRadius + (typeof _appearance.borderRadius == 'number' ? 'px' : ''),
-		'--borderColor': _appearance.borderColor,
-		'--color': _appearance.color,
-		'--focusColor': _appearance.focusColor,
-		'--focusSize': _appearance.focusSize + (typeof _appearance.focusSize == 'number' ? 'px' : ''),
-		'--backgroundColor': _appearance.backgroundColor,
-		'--backgroundColorHover': _appearance.backgroundColorHover,
-		'--iconPadding': _appearance.iconPadding + (typeof _appearance.iconPadding == 'number' ? 'px' : ''),
-		'--iconSize': _appearance.iconSize + (typeof _appearance.iconSize == 'number' ? 'px' : ''),
-		'--labelPadding': _appearance.labelPadding + (typeof _appearance.labelPadding == 'number' ? 'px' : ''),
-		'--clickColor': _appearance.clickColor,
 		gridTemplateAreas: gridTemplateAreas
 	}">
 		<span class="d-button__click" :class="clickElement.animating ? 'animating' : ''" :style="{
@@ -286,4 +196,4 @@ const click = async (event: MouseEvent) => {
 		background-color: var(--backgroundColorHover);
 	}
 }
-</style>@/core/utilities
+</style>

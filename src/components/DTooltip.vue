@@ -1,6 +1,6 @@
 <script lang="ts">
 import { reactive } from 'vue'
-import { Utilities, type BoundBorders } from '@/helpers/utilities'
+import { Utilities, type BoundBorders } from '@/core/utilities'
 
 export enum Position {
 	top = 'top',
