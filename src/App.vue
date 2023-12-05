@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import DBaseButton from './components/DBaseButton.vue'
 import DButton from './components/DButton.vue'
+import DSelect from './components/DSelect.vue'
 
 const input = ref()
 
@@ -15,6 +16,18 @@ Object.defineProperties(window, {
 <template>
 	<div class="section">
 		<DBaseButton icon="key">Guardar</DBaseButton>
+	</div>
+	<div class="section">
+		<DSelect :c-style="{ colorSchema: 'blue' }"></DSelect>
+		<DSelect :c-style="{ colorSchema: 'red' }"></DSelect>
+		<DSelect :c-style="{ colorSchema: 'green' }"></DSelect>
+		<DSelect :c-style="{ colorSchema: 'sky-blue' }"></DSelect>
+		<DSelect :c-style="{ colorSchema: 'yellow' }"></DSelect>
+		<DSelect :c-style="{ colorSchema: 'gray' }"></DSelect>
+		<DSelect :c-style="{ colorSchema: 'lime' }"></DSelect>
+		<DSelect :c-style="{ colorSchema: 'brownie' }"></DSelect>
+		<DSelect :c-style="{ colorSchema: 'purple' }"></DSelect>
+		<DSelect :c-style="{ colorSchema: 'gold' }"></DSelect>
 	</div>
 	<div class="section">
 		<DButton icon="key" :disabled="true" :c-style="{ colorSchema: 'blue' }">Guardar</DButton>

@@ -8,7 +8,7 @@ export type Style = {
 	bordered?: boolean
 	ghost?: boolean
 	iconBackground?: boolean
-	size?: 'small' | 'normal' | 'large'
+	focusHalo?: boolean
 }
 
 export default {
@@ -114,6 +114,7 @@ const click = async (event: MouseEvent) => {
 		'dc-icon-background-' + (cStyle?.iconBackground ?? true),
 		'dc-bordered-' + (cStyle?.bordered ?? true),
 		'dc-ghost-' + (cStyle?.ghost ?? false),
+		'dc-focus-halo-' + (cStyle?.focusHalo ?? true),
 	]">
 		<span class="d-button__click" :class="clickElement.animating ? 'animating' : ''" :style="{
 			'--x': clickElement.x,
@@ -259,8 +260,12 @@ const click = async (event: MouseEvent) => {
 		&-false {
 			opacity: 1;
 
-			&:hover, &:focus {
-				outline: 4px solid var(--outline-hover);
+			&.dc-focus-halo {
+				&-true {
+					&:hover, &:focus {
+						outline: 4px solid var(--outline-hover);
+					}
+				}
 			}
 		}
 	}
