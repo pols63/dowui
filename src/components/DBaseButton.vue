@@ -38,7 +38,14 @@ const click = (event: MouseEvent) => {
 </script>
 
 <template>
-	<component :is="focusable ? type : 'span'" @click="click" :class="disabled ? 'disabled' : ''" ref="element">
+	<component :is="(focusable && !disabled) ? type : 'span'" class="d-base-button" @click="click" :class="['dc-disabled-' + (disabled ?? false)]" ref="element">
 			<slot></slot>
 	</component>
 </template>
+
+<style lang="scss">
+.d-base-button {
+	cursor: default;
+	user-select: none;
+}
+</style>

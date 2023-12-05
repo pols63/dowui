@@ -31,6 +31,7 @@ const props = withDefaults(defineProps<{
 	icon?: string
 	preventDoubleClick?: boolean
 	cStyle?: Style
+	disabled?: boolean
 }>(), {
 	defaultAppearance: 'blue',
 	type: 'button',
@@ -77,6 +78,7 @@ const gridTemplateAreas = computed(() => {
 })
 
 const click = async (event: MouseEvent) => {
+	if (props.disabled) return
 	clickElement.animating = false
 	await nextTick()
 	if (event instanceof TouchEvent) {
@@ -104,7 +106,7 @@ const click = async (event: MouseEvent) => {
 </script>
 
 <template>
-	<DBaseButton :icon="icon" :type="type" :focusable="focusable" class="d-button" @click="click" ref="bodyElement" :style="{
+	<DBaseButton :icon="icon" :type="type" :focusable="focusable" class="d-button" @click="click" :disabled="disabled" ref="bodyElement" :style="{
 		gridTemplateAreas: gridTemplateAreas
 	}" :class="[
 		'dc-color-' + (cStyle?.colorSchema ?? 'blue'),
@@ -199,7 +201,7 @@ const click = async (event: MouseEvent) => {
 		--border-color: #{calculate-color($color, -0.6, 1)};
 		--color: #{calculate-color($color, -0.6)};
 	} @else {
-		--border-color: #{calculate-color($color, -0.7, 1)};
+		--border-color: #{calculate-color($color, -0.8, 1)};
 		--color: white;
 	}
 	@if ($color-name == lime or $color-name == yellow) {
@@ -250,6 +252,19 @@ const click = async (event: MouseEvent) => {
 		}
 	}
 
+	&.dc-disabled {
+		&-true {
+			opacity: 0.5;
+		}
+		&-false {
+			opacity: 1;
+
+			&:hover, &:focus {
+				outline: 4px solid var(--outline-hover);
+			}
+		}
+	}
+
 	&.dc-ghost {
 		&-true {
 			background: none;
@@ -287,11 +302,6 @@ const click = async (event: MouseEvent) => {
 			padding: 5px;
 			border: 0px solid transparent;
 		}
-	}
-
-
-	&:hover, &:focus {
-		outline: 4px solid var(--outline-hover);
 	}
 
 	.d-button__click {
