@@ -8,21 +8,25 @@ export type Align = 'start' | 'center' | 'end'
 
 export type Style = {
 	colorSchema?: ColorsKey
+	mode?: 'light' | 'normal' | 'dark'
 	margin?: BoundBorders
 	position?: Position
 	align?: Align
 	arrowSize?: number
 	bordered?: boolean
+	filled?: boolean
 	zIndex?: number
 }
 
 export const defaultStyle: Required<Style> = {
 	colorSchema: 'blue',
+	mode: 'normal',
 	margin: 5,
 	position: 'bottom',
 	align: 'center',
 	arrowSize: 7,
 	bordered: false,
+	filled: false,
 	zIndex: 1
 }
 
@@ -404,7 +408,7 @@ const setPosition = async (el: Element, done: () => void) => {
 }
 
 const focusuot = (event: FocusEvent) => {
-	if (!contentElement.value?.contains(event.relatedTarget as HTMLElement)) _visible.value = false
+	// if (!contentElement.value?.contains(event.relatedTarget as HTMLElement)) _visible.value = false
 }
 </script>
 
@@ -413,7 +417,9 @@ const focusuot = (event: FocusEvent) => {
 		<transition name="fade" @enter="setPosition" @after-enter="$emit('shown')">
 			<div class="d-tooltip" v-if="_visible" :class="[
 					'dc-bordered-' + (cStyle?.bordered ?? defaultStyle.bordered),
-					'dc-color-' + (cStyle?.colorSchema ?? defaultStyle.colorSchema)
+					'dc-color-' + (cStyle?.colorSchema ?? defaultStyle.colorSchema),
+					'dc-filled-' + (cStyle?.filled ?? defaultStyle.filled),
+					'dc-mode-' + (cStyle?.mode ?? defaultStyle.mode),
 				]" :style="{
 					zIndex: cStyle?.zIndex ?? defaultStyle.zIndex,
 				}">
@@ -437,8 +443,32 @@ const focusuot = (event: FocusEvent) => {
 </template>
 
 <style lang="scss">
-@mixin set-vars($color-name, $color) {
-	--border-color: #{$color};
+@mixin set-vars($color-name, $color, $mode) {
+	@if $mode == 'light' {
+		@if ($color-name == lime or $color-name == yellow) {
+			--shadow-color: #{calculate-color($color, -0.4, 0.75)};
+			--border-color: #{calculate-color($color, -0.5, 1)};
+		} @else {
+			--shadow-color: #{calculate-color($color, 0, 0.75)};
+			--border-color: #{calculate-color($color, -0.3, 1)};
+		}
+	}
+	@if $mode == 'normal' {
+		--border-color: #{calculate-color($color, -0.3, 1)};
+		@if ($color-name == lime or $color-name == yellow) {
+			--shadow-color: #{calculate-color($color, -0.4, 0.75)};
+		} @else {
+			--shadow-color: #{calculate-color($color, 0, 0.75)};
+		}
+	}
+	@if $mode == 'dark' {
+		--border-color: #{calculate-color($color, -0.8, 1)};
+		@if ($color-name == lime or $color-name == yellow) {
+			--shadow-color: #{calculate-color($color, -0.4, 0.75)};
+		} @else {
+			--shadow-color: #{calculate-color($color, 0, 0.75)};
+		}
+	}
 }
 
 .d-tooltip {
@@ -447,18 +477,30 @@ const focusuot = (event: FocusEvent) => {
 	width: 0px;
 	height: 0px;
 	position: fixed;
-	filter: drop-shadow(0px 0px 5px black);
+	filter: drop-shadow(0px 0px 5px var(--shadow-color));
+	cursor: default;
+	--border-width: 2px;
 
 	@each $color-name, $color in $colors {
 		&.dc-color-#{$color-name} {
-			@include set-vars($color-name, $color);
+			&.dc-mode {
+				&-light {
+					@include set-vars($color-name, $color, 'light');
+				}
+				&-normal {
+					@include set-vars($color-name, $color, 'normal');
+				}
+				&-dark {
+					@include set-vars($color-name, $color, 'dark');
+				}
+			}
 		}
 	}
 
-	&.dc-bordered {
+	&.dc-filled {
 		&-true {
 			.d-tooltip__content {
-				border: 1px solid var(--border-color);
+				background-color: var(--border-color);
 			}
 			.d-tooltip__arrow {
 				border-color: var(--border-color);
@@ -466,10 +508,23 @@ const focusuot = (event: FocusEvent) => {
 		}
 		&-false {
 			.d-tooltip__content {
-				border: 1px solid transparent;
+				background-color: white;
+			}
+		}
+	}
+
+	&.dc-bordered {
+		&-true {
+			.d-tooltip__content {
+				border: var(--border-width) solid var(--border-color);
 			}
 			.d-tooltip__arrow {
-				border-color: white;
+				border-color: var(--border-color);
+			}
+		}
+		&-false {
+			.d-tooltip__content {
+				border: var(--border-width) solid transparent;
 			}
 		}
 	}
@@ -480,13 +535,13 @@ const focusuot = (event: FocusEvent) => {
 		border-top-width: 0px;
 		border-left-color: transparent;
 		border-right-color: transparent;
+		border-color: white;
 	}
 
 	.d-tooltip__content {
 		position: fixed;
 		box-sizing: border-box;
-		background-color: white;
-		padding: 5;
+		padding: 5px;
 
 		&:focus-visible {
 			outline: none;

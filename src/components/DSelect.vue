@@ -15,7 +15,7 @@ export default {
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import DTooltip, { Align } from './DTooltip.vue'
+import DTooltip, { type Align } from './DTooltip.vue'
 import DButton from './DButton.vue'
 
 withDefaults(defineProps<{
