@@ -1,54 +1,36 @@
 <script lang="ts">
 import { reactive } from 'vue'
-import { Utilities, type BoundBorders } from '@/core/utilities'
+import { Utilities, type BoundBorders, type ColorsKey } from '@/core/utilities'
 
-export enum Position {
-	top = 'top',
-	bottom = 'bottom',
-	vertical = 'vertical',
-	left = 'left',
-	right = 'right',
-	horizontal = 'horizontal'
+export type Position = 'top' | 'bottom' | 'vertical' | 'left' | 'right' | 'horizontal' 
+
+export type Align = 'start' | 'center' | 'end'
+
+export type Style = {
+	colorSchema?: ColorsKey
+	margin?: BoundBorders
+	position?: Position
+	align?: Align
+	arrowSize?: number
+	bordered?: boolean
+	zIndex?: number
 }
 
-export enum Align {
-	start = 'start',
-	center = 'center',
-	end = 'end',
-}
-
-export type Appearance = {
-	padding: BoundBorders
-	margin: BoundBorders
-	position: Position
-	align: Align
-	arrowSize: number
-	borderWidth: number
-	borderColor: string
-	backgroundColor: string
-	borderRadius: number
-	shadow: string
-	zIndex: number
-}
-
-export const defaultAppearance: Appearance = {
-	padding: 5,
+export const defaultStyle: Required<Style> = {
+	colorSchema: 'blue',
 	margin: 5,
-	position: Position.bottom,
-	align: Align.center,
+	position: 'bottom',
+	align: 'center',
 	arrowSize: 7,
-	borderWidth: 0,
-	borderColor: 'black',
-	backgroundColor: 'white',
-	borderRadius: 4,
-	shadow: '0px 0px 3px #00000088',
-	zIndex: 9999999
+	bordered: false,
+	zIndex: 1
 }
 
 export default {
 	inheritAttrs: false
 }
 
+const borderRadius = 8
 </script>
 
 <script setup lang="ts">
@@ -58,16 +40,14 @@ const props = withDefaults(defineProps<{
 	target?: HTMLElement
 	visible?: boolean
 	teleportTo?: string
-	appearance?: Partial<Appearance>
+	cStyle?: Style
 }>(), {
 	visible: false,
-	position: Position.bottom,
 	teleportTo: 'body',
 })
 
 let interval: number
 const _visible = ref<boolean>(false)
-const _appearance = reactive<Appearance>(defaultAppearance)
 
 const emit = defineEmits<{
 	(e: 'update:visible', value: boolean): void
@@ -145,10 +125,8 @@ const calculatePosition = async () => {
 	/* Obtiene las coordenadas del objeto objetivo */
 	currentTargetElementClientRect = props.target.getBoundingClientRect()
 	
-	const margins = Utilities.Borders.getBoundBorders(props.appearance?.margin ?? _appearance.margin)
-	const arrowSize = props.appearance?.arrowSize ?? _appearance.arrowSize
-	const arrowColor = (props.appearance?.borderWidth ?? _appearance.borderWidth) ? (props.appearance?.borderColor ?? _appearance.borderColor) : (props.appearance?.backgroundColor ?? _appearance.backgroundColor)
-	const borderRadius = props.appearance?.borderRadius ?? _appearance.borderRadius
+	const margins = Utilities.Borders.getBoundBorders(props.cStyle?.margin ?? defaultStyle.margin)
+	const arrowSize = props.cStyle?.arrowSize ?? defaultStyle.arrowSize
 
 	/* Elimina los límites de tamaño del elemento de contenido de forma que se adapte a sus elementos hijos */
 	contentElementCoords.maxWidth = null
@@ -172,45 +150,45 @@ const calculatePosition = async () => {
 	}
 
 	/* Calcula la ubicación del tooltip */
-	let position = props.appearance?.position ?? _appearance.position
-	const align = props.appearance?.align ?? _appearance.align
+	let position = props.cStyle?.position ?? defaultStyle.position
+	const align = props.cStyle?.align ?? defaultStyle.align
 
 	/* Según las dimensiones disponibles, identifica el lugar en donde se ubicará el tooltip */
 	let finalPosition: Position = position
 	switch (position) {
-		case Position.top:
+		case 'top':
 			if (requiredSpace.height > availableSpaces.top) {
 				if (requiredSpace.height > availableSpaces.bottom) {
-					finalPosition = Position.vertical
+					finalPosition = 'vertical'
 				} else {
-					finalPosition = Position.bottom
+					finalPosition = 'bottom'
 				}
 			}
 			break
-		case Position.bottom:
+		case 'bottom':
 			if (requiredSpace.height > availableSpaces.bottom) {
 				if (requiredSpace.height > availableSpaces.top) {
-					finalPosition = Position.vertical
+					finalPosition = 'vertical'
 				} else {
-					finalPosition = Position.top
+					finalPosition = 'top'
 				}
 			}
 			break
-		case Position.left:
+		case 'left':
 			if (requiredSpace.width > availableSpaces.left) {
 				if (requiredSpace.width > availableSpaces.right) {
-					finalPosition = Position.horizontal
+					finalPosition = 'horizontal'
 				} else {
-					finalPosition = Position.right
+					finalPosition = 'right'
 				}
 			}
 			break
-		case Position.right:
+		case 'right':
 			if (requiredSpace.width > availableSpaces.right) {
 				if (requiredSpace.width > availableSpaces.left) {
-					finalPosition = Position.horizontal
+					finalPosition = 'horizontal'
 				} else {
-					finalPosition = Position.left
+					finalPosition = 'left'
 				}
 			}
 			break
@@ -218,33 +196,33 @@ const calculatePosition = async () => {
 
 	/* Establece las dimensiones finales del contenido según la posición final del tooltip */
 	switch (finalPosition) {
-		case Position.top:
-		case Position.bottom:
-		case Position.vertical:
+		case 'top':
+		case 'bottom':
+		case 'vertical':
 			contentElementCoords.maxWidth = availableSpaces.width
 			break
-		case Position.left:
-		case Position.right:
-		case Position.horizontal:
+		case 'left':
+		case 'right':
+		case 'horizontal':
 			contentElementCoords.maxHeight = availableSpaces.height
 	}
 	switch (finalPosition) {
-		case Position.top:
+		case 'top':
 			contentElementCoords.maxHeight = availableSpaces.top - arrowSize
 			break
-		case Position.bottom:
+		case 'bottom':
 			contentElementCoords.maxHeight = availableSpaces.bottom - arrowSize
 			break
-		case Position.vertical:
+		case 'vertical':
 			contentElementCoords.maxHeight = availableSpaces.height
 			break
-		case Position.left:
+		case 'left':
 			contentElementCoords.maxWidth = availableSpaces.left - arrowSize
 			break
-		case Position.right:
+		case 'right':
 			contentElementCoords.maxWidth = availableSpaces.right - arrowSize
 			break
-		case Position.horizontal:
+		case 'horizontal':
 			contentElementCoords.maxWidth = availableSpaces.width
 			break
 	}
@@ -252,15 +230,15 @@ const calculatePosition = async () => {
 
 	/* Ubica el tooltip según la posición calculada. Realiza el cálculo sobre el eje principal según la posición escogida */
 	switch (finalPosition) {
-		case Position.top:
+		case 'top':
 			contentElementCoords.y = currentTargetElementClientRect.y - contentElementClientRect.height - arrowSize
 			break
-		case Position.bottom:
+		case 'bottom':
 			contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height + arrowSize
 			arrowElementCoords.y = contentElementCoords.y - arrowSize
 			arrowElementCoords.visible = true
 			break
-		case Position.vertical:
+		case 'vertical':
 			contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height / 2 - contentElementClientRect.height / 2
 			/* Se corrige si es necesario */
 			if (contentElementCoords.y < margins[0]) {
@@ -269,13 +247,13 @@ const calculatePosition = async () => {
 				contentElementCoords.y = window.innerHeight - margins[2] - contentElementClientRect.height
 			}
 			break
-		case Position.left:
+		case 'left':
 			contentElementCoords.x = currentTargetElementClientRect.x - contentElementClientRect.width - arrowSize
 			break
-		case Position.right:
+		case 'right':
 			contentElementCoords.x = currentTargetElementClientRect.x + currentTargetElementClientRect.width + arrowSize
 			break
-		case Position.horizontal:
+		case 'horizontal':
 			contentElementCoords.x = currentTargetElementClientRect.x + currentTargetElementClientRect.width / 2 - contentElementClientRect.width / 2
 			/* Se corrige si es necesario */
 			if (contentElementCoords.x < margins[3]) {
@@ -288,17 +266,17 @@ const calculatePosition = async () => {
 
 	/* Ubica la posición del tooltip en el eje secundario, según la alineación escogida */
 	switch (finalPosition) {
-		case Position.top:
-		case Position.bottom:
-		case Position.vertical:
+		case 'top':
+		case 'bottom':
+		case 'vertical':
 			switch (align) {
-				case Align.start:
+				case 'start':
 					contentElementCoords.x = currentTargetElementClientRect.x
 					break
-				case Align.center:
+				case 'center':
 					contentElementCoords.x = currentTargetElementClientRect.x + currentTargetElementClientRect.width / 2 - contentElementClientRect.width / 2
 					break
-				case Align.end:
+				case 'end':
 					contentElementCoords.x = currentTargetElementClientRect.x + currentTargetElementClientRect.width - contentElementClientRect.width
 					break
 			}
@@ -309,17 +287,17 @@ const calculatePosition = async () => {
 				contentElementCoords.x = window.innerWidth - margins[1] - contentElementClientRect.width
 			}
 			break
-		case Position.left:
-		case Position.right:
-		case Position.horizontal:
+		case 'left':
+		case 'right':
+		case 'horizontal':
 			switch (align) {
-				case Align.start:
+				case 'start':
 					contentElementCoords.y = currentTargetElementClientRect.y
 					break
-				case Align.center:
+				case 'center':
 					contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height / 2 - contentElementClientRect.height / 2
 					break
-				case Align.end:
+				case 'end':
 					contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height - contentElementClientRect.height
 					break
 			}
@@ -333,34 +311,34 @@ const calculatePosition = async () => {
 	}
 
 	/* Posicionamiento del arrow */
-	if (finalPosition == Position.horizontal || finalPosition == Position.vertical) {
+	if (finalPosition == 'horizontal' || finalPosition == 'vertical') {
 		arrowElementCoords.visible = false
 	} else {
 		switch (finalPosition) {
-			case Position.top:
-			case Position.bottom:
+			case 'top':
+			case 'bottom':
 				switch (align) {
-					case Align.start:
+					case 'start':
 						arrowElementCoords.x = Math.max(currentTargetElementClientRect.x, contentElementCoords.x) + borderRadius
 						break
-					case Align.center:
+					case 'center':
 						arrowElementCoords.x = Math.min(currentTargetElementClientRect.x + currentTargetElementClientRect.width / 2, contentElementCoords.x + contentElementClientRect.width / 2) - arrowSize / 2
 						break
-					case Align.end:
+					case 'end':
 						arrowElementCoords.x = Math.min(currentTargetElementClientRect.x + currentTargetElementClientRect.width, contentElementCoords.x + contentElementClientRect.width) - borderRadius - arrowSize
 						break
 				}
 				break
-			case Position.left:
-			case Position.right:
+			case 'left':
+			case 'right':
 				switch (align) {
-					case Align.start:
+					case 'start':
 						arrowElementCoords.y = contentElementCoords.y + borderRadius
 						break
-					case Align.center:
+					case 'center':
 						arrowElementCoords.y = contentElementCoords.y + contentElementClientRect.height / 2 - arrowSize / 2
 						break
-					case Align.end:
+					case 'end':
 						contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height - contentElementClientRect.height
 						break
 				}
@@ -369,42 +347,38 @@ const calculatePosition = async () => {
 
 		/* Estilo del arrow */
 		switch (finalPosition) {
-			case Position.top:
+			case 'top':
 				arrowElementCoords.style.borderTopWidth = arrowSize + 'px'
-				arrowElementCoords.style.borderTopColor = arrowColor
 				arrowElementCoords.style.borderBottomWidth = '0px'
 				arrowElementCoords.style.borderBottomColor = 'transparent'
 				break
-			case Position.bottom:
+			case 'bottom':
 				arrowElementCoords.style.borderBottomWidth = arrowSize + 'px'
-				arrowElementCoords.style.borderBottomColor = arrowColor
 				arrowElementCoords.style.borderTopWidth = '0px'
 				arrowElementCoords.style.borderTopColor = 'transparent'
 				break
-			case Position.left:
+			case 'left':
 				arrowElementCoords.style.borderLeftWidth = arrowSize + 'px'
-				arrowElementCoords.style.borderLeftColor = arrowColor
 				arrowElementCoords.style.borderRightWidth = '0px'
 				arrowElementCoords.style.borderRightColor = 'transparent'
 				break
-			case Position.right:
+			case 'right':
 				arrowElementCoords.style.borderRightWidth = arrowSize + 'px'
-				arrowElementCoords.style.borderRightColor = arrowColor
 				arrowElementCoords.style.borderLeftWidth = '0px'
 				arrowElementCoords.style.borderLeftColor = 'transparent'
 				break
 		}
 
 		switch (finalPosition) {
-			case Position.top:
-			case Position.bottom:
+			case 'top':
+			case 'bottom':
 				arrowElementCoords.style.borderLeftWidth = (arrowSize / 1.5) + 'px'
 				arrowElementCoords.style.borderLeftColor = 'transparent'
 				arrowElementCoords.style.borderRightWidth = (arrowSize / 1.5) + 'px'
 				arrowElementCoords.style.borderRightColor = 'transparent'
 				break
-			case Position.left:
-			case Position.right:
+			case 'left':
+			case 'right':
 				arrowElementCoords.style.borderTopWidth = (arrowSize / 1.5) + 'px'
 				arrowElementCoords.style.borderTopColor = 'transparent'
 				arrowElementCoords.style.borderBottomWidth = (arrowSize / 1.5) + 'px'
@@ -437,9 +411,11 @@ const focusuot = (event: FocusEvent) => {
 <template>
 	<teleport :to="teleportTo">
 		<transition name="fade" @enter="setPosition" @after-enter="$emit('shown')">
-			<div class="d-tooltip" v-if="_visible" :style="{
-					filter: 'drop-shadow(' + (appearance?.shadow ?? _appearance.shadow) + ')',
-					zIndex: appearance?.zIndex ?? _appearance.zIndex,
+			<div class="d-tooltip" v-if="_visible" :class="[
+					'dc-bordered-' + (cStyle?.bordered ?? defaultStyle.bordered),
+					'dc-color-' + (cStyle?.colorSchema ?? defaultStyle.colorSchema)
+				]" :style="{
+					zIndex: cStyle?.zIndex ?? defaultStyle.zIndex,
 				}">
 				<div class="d-tooltip__arrow" v-if="arrowElementCoords.visible" :style="{
 						...arrowElementCoords.style,
@@ -449,13 +425,9 @@ const focusuot = (event: FocusEvent) => {
 				<div class="d-tooltip__content" ref="contentElement" tabindex="0" @focusout="focusuot($event)" :style="{
 						maxHeight: contentElementCoords.maxHeight + 'px',
 						maxWidth: contentElementCoords.maxWidth + 'px',
-						borderWidth: (appearance?.borderWidth ?? _appearance.borderWidth) + 'px',
-						borderColor: (appearance?.borderColor ?? _appearance.borderColor) + 'px',
 						top: contentElementCoords.y + 'px',
 						left: contentElementCoords.x + 'px',
-						backgroundColor: appearance?.backgroundColor ?? _appearance.backgroundColor,
-						padding: Utilities.Borders.getBoundBordersString(appearance?.padding ?? _appearance.padding),
-						borderRadius: (appearance?.borderRadius ?? _appearance.borderRadius) + 'px',
+						borderRadius: borderRadius + 'px',
 					}">
 					<slot></slot>
 				</div>
@@ -465,12 +437,42 @@ const focusuot = (event: FocusEvent) => {
 </template>
 
 <style lang="scss">
+@mixin set-vars($color-name, $color) {
+	--border-color: #{$color};
+}
+
 .d-tooltip {
 	left: 0px;
 	top: 0px;
 	width: 0px;
 	height: 0px;
 	position: fixed;
+	filter: drop-shadow(0px 0px 5px black);
+
+	@each $color-name, $color in $colors {
+		&.dc-color-#{$color-name} {
+			@include set-vars($color-name, $color);
+		}
+	}
+
+	&.dc-bordered {
+		&-true {
+			.d-tooltip__content {
+				border: 1px solid var(--border-color);
+			}
+			.d-tooltip__arrow {
+				border-color: var(--border-color);
+			}
+		}
+		&-false {
+			.d-tooltip__content {
+				border: 1px solid transparent;
+			}
+			.d-tooltip__arrow {
+				border-color: white;
+			}
+		}
+	}
 
 	.d-tooltip__arrow {
 		position: fixed;
@@ -483,7 +485,8 @@ const focusuot = (event: FocusEvent) => {
 	.d-tooltip__content {
 		position: fixed;
 		box-sizing: border-box;
-		border-style: solid;
+		background-color: white;
+		padding: 5;
 
 		&:focus-visible {
 			outline: none;
@@ -504,4 +507,4 @@ const focusuot = (event: FocusEvent) => {
 		}
 	}
 }
-</style>@/core/utilities
+</style>

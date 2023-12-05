@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import DBaseButton from './components/DBaseButton.vue'
 import DButton from './components/DButton.vue'
 import DSelect from './components/DSelect.vue'
+import DTooltip from './components/DTooltip.vue'
 
 const input = ref()
 
@@ -11,6 +12,10 @@ Object.defineProperties(window, {
 		value: input
 	}
 })
+
+const tooltipVisible = ref<boolean>(false)
+
+const boton = ref()
 </script>
 
 <template>
@@ -35,11 +40,12 @@ Object.defineProperties(window, {
 		<DButton icon="key" :disabled="true" :c-style="{ colorSchema: 'green' }">Guardar</DButton>
 		<DButton icon="key" :disabled="true" :c-style="{ colorSchema: 'sky-blue' }">Guardar</DButton>
 		<DButton icon="key" :disabled="true" :c-style="{ colorSchema: 'yellow' }">Guardar</DButton>
-		<DButton icon="key" :disabled="true" :c-style="{ colorSchema: 'gray' }">Guardar</DButton>
+		<DButton icon="key" :disabled="true" @click="tooltipVisible = true" :c-style="{ colorSchema: 'gray' }" ref="boton">Guardar</DButton>
 		<DButton icon="key" :disabled="true" :c-style="{ colorSchema: 'lime' }">Guardar</DButton>
 		<DButton icon="key" :disabled="true" :c-style="{ colorSchema: 'brownie' }">Guardar</DButton>
 		<DButton icon="key" :disabled="true" :c-style="{ colorSchema: 'purple' }">Guardar</DButton>
 		<DButton icon="key" :disabled="true" :c-style="{ colorSchema: 'gold' }">Guardar</DButton>
+		<DTooltip :target="boton.$refs.bodyElement">Esto es una prueba</DTooltip>
 	</div>
 	<div class="section">
 		<DButton icon="key" :c-style="{ colorSchema: 'blue' }"></DButton>
