@@ -313,11 +313,12 @@ const calculatePosition = async () => {
 			}
 			break
 	}
-
+	
 	/* Posicionamiento del arrow */
 	if (finalPosition == 'horizontal' || finalPosition == 'vertical') {
 		arrowElementCoords.visible = false
 	} else {
+		arrowElementCoords.visible = true
 		switch (finalPosition) {
 			case 'top':
 			case 'bottom':
@@ -346,6 +347,18 @@ const calculatePosition = async () => {
 						contentElementCoords.y = currentTargetElementClientRect.y + currentTargetElementClientRect.height - contentElementClientRect.height
 						break
 				}
+				break
+		}
+
+		switch (finalPosition) {
+			case 'left':
+				arrowElementCoords.x = currentTargetElementClientRect.x + - arrowSize
+				break
+			case 'right':
+				arrowElementCoords.x = currentTargetElementClientRect.x + currentTargetElementClientRect.width
+				break
+			case 'top':
+				arrowElementCoords.y = currentTargetElementClientRect.y - arrowSize
 				break
 		}
 

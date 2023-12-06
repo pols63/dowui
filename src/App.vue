@@ -30,7 +30,11 @@ const showTooltip = () => {
 		<span ref="buttonWrapper">
 			<DButton icon="key" @click="showTooltip()" :c-style="{ colorSchema: 'gray' }" ref="boton">Guardar</DButton>
 		</span>
-		<DTooltip :target="buttonWrapper" v-model:visible="tooltipVisible" :c-style="{ colorSchema: 'blue' }">Esto es una prueba</DTooltip>
+		<DTooltip :target="buttonWrapper" v-model:visible="tooltipVisible" :c-style="{ position: 'top', align: 'end', colorSchema: 'blue' }">
+			<div style="white-space: nowrap;">
+				Esto es una prueba
+			</div>
+		</DTooltip>
 	</div>
 </template>
 
@@ -40,8 +44,9 @@ const showTooltip = () => {
 .section {
 	display: grid;
 	grid-auto-flow: column;
-	justify-items: start;
+	justify-items: center;
 	gap: 10px;
 	padding: 10px;
+	margin-top: 50px;
 }
 </style>
