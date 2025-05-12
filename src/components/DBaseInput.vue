@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Utilities } from '@/core/utilities'
+import { PUtilsDate, PUtilsNumber, PUtilsString } from 'pols-utils'
 </script>
 
 <script setup lang="ts">
@@ -45,7 +45,7 @@ const updateValue = (from: string | number | undefined | null, to: 'event' | 'in
 				result = from.toString()
 			} else {
 				thereIsAnError = true
-				result = (from as any).toString()
+				result = (from as string).toString()
 			}
 			break
 		}
@@ -95,7 +95,7 @@ const updateValue = (from: string | number | undefined | null, to: 'event' | 'in
 						result = ''
 					} else {
 						thereIsAnError = true
-						result = (from as any).toString()
+						result = (from as string).toString()
 					}
 					break
 				}
@@ -116,16 +116,16 @@ const updateValue = (from: string | number | undefined | null, to: 'event' | 'in
 				case 'event': {
 					if (typeof from == 'string' && from != '') {
 						const now = new Date()
-						let day = Utilities.padLeft(now.getDate(), 2, '0')
-						let month = Utilities.padLeft(now.getMonth() + 1, 2, '0')
-						let year = Utilities.padLeft(now.getFullYear(), 4, '0')
+						let day = PUtilsString.padStart(now.getDate(), 2)
+						let month = PUtilsString.padStart(now.getMonth() + 1, 2)
+						let year = PUtilsString.padStart(now.getFullYear(), 4)
 
 						if (from != '*') {
 							const match = from.match(/^([0-9]{1,2})((\.|\/)?([0-9]{1,2})((\3)?([0-9]{1,4}))?)?$/)
 							if (match) {
-								day = Utilities.padLeft(match[1], 2, '0')
-								month = match[4] ? Utilities.padLeft(match[4], 2, '0') : month
-								year = match[7] ? Utilities.padLeft(match[7], 4, '0') : year
+								day = PUtilsString.padStart(match[1], 2)
+								month = match[4] ? PUtilsString.padStart(match[4], 2) : month
+								year = match[7] ? PUtilsString.padStart(match[7], 4) : year
 							} else {
 								thereIsAnError = true
 							}
@@ -137,7 +137,7 @@ const updateValue = (from: string | number | undefined | null, to: 'event' | 'in
 								thereIsAnError = true
 								result = ''
 							} else {
-								result = Utilities.Date.format(tempDate, '@y-@mm-@dd')
+								result = PUtilsDate.format(tempDate, '@y-@mm-@dd')
 							}
 						}							
 					}
@@ -150,7 +150,7 @@ const updateValue = (from: string | number | undefined | null, to: 'event' | 'in
 							thereIsAnError = true
 							result = from
 						} else {
-							result = Utilities.Date.format(tempDate, '@dd/@mm/@y')
+							result = PUtilsDate.format(tempDate, '@dd/@mm/@y')
 						}
 					} else if (from == null) {
 						result = ''
@@ -168,16 +168,16 @@ const updateValue = (from: string | number | undefined | null, to: 'event' | 'in
 				case 'event': {
 					if (typeof from == 'string' && from != '') {
 						const now = new Date()
-						let hour = Utilities.padLeft(now.getHours(), 2, '0')
-						let minute = Utilities.padLeft(now.getMinutes() + 1, 2, '0')
-						let second = Utilities.padLeft(now.getSeconds(), 4, '0')
+						let hour = PUtilsString.padStart(now.getHours(), 2)
+						let minute = PUtilsString.padStart(now.getMinutes() + 1, 2)
+						let second = PUtilsString.padStart(now.getSeconds(), 4)
 
 						if (from != '*') {
 							const match = from.match(/^([0-9]{1,2})(:?([0-9]{1,2})(:?([0-9]{1,2}))?)?$/)
 							if (match) {
-								hour = Utilities.padLeft(match[1], 2, '0')
-								minute = match[3] ? Utilities.padLeft(match[3], 2, '0') : minute
-								second = match[5] ? Utilities.padLeft(match[5], 2, '0') : second
+								hour = PUtilsString.padStart(match[1], 2)
+								minute = match[3] ? PUtilsString.padStart(match[3], 2) : minute
+								second = match[5] ? PUtilsString.padStart(match[5], 2) : second
 							} else {
 								thereIsAnError = true
 							}
@@ -240,14 +240,14 @@ const changeEvent = (event: Event) => {
 	switch (props.type) {
 		case 'number': {
 			if (typeof currentValue == 'number') {
-				inputValue.value = Utilities.Number.format(currentValue, props.decimals, '.', '')
+				inputValue.value = PUtilsNumber.format(currentValue, { decimals: props.decimals })
 				updateValue(inputValue.value, 'event')
 			}
 			break
 		}
 		case 'date': {
 			if (typeof currentValue == 'string' && currentValue) {
-				inputValue.value = Utilities.Date.format(new Date(`${currentValue} 00:00:00`), '@dd/@mm/@y')
+				inputValue.value = PUtilsDate.format(new Date(`${currentValue} 00:00:00`), '@dd/@mm/@y')
 				updateValue(inputValue.value, 'event')
 			}
 			break

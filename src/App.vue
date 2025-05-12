@@ -1,52 +1,47 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import DBaseButton from './components/DBaseButton.vue'
-import DButton from './components/DButton.vue'
-// import DSelect from './components/DSelect.vue'
-import DTooltip from './components/DTooltip.vue'
-
-const input = ref()
-
-Object.defineProperties(window, {
-	input: {
-		value: input
-	}
-})
-
-const tooltipVisible = ref<boolean>(false)
-
-const buttonWrapper = ref<HTMLElement>()
-
-const showTooltip = () => {
-	tooltipVisible.value = true
-}
+import HelloWorld from './components/HelloWorld.vue'
+import TheWelcome from './components/TheWelcome.vue'
 </script>
 
 <template>
-	<div class="section">
-		<DBaseButton icon="key">Guardar</DBaseButton>
-	</div>
-	<div class="section">
-		<span ref="buttonWrapper">
-			<DButton icon="key" @click="showTooltip()" :c-style="{ colorSchema: 'gray' }" ref="boton">Guardar</DButton>
-		</span>
-		<DTooltip :target="buttonWrapper" v-model:visible="tooltipVisible" :c-style="{ position: 'top', align: 'end', colorSchema: 'blue' }">
-			<div style="white-space: nowrap;">
-				Esto es una prueba
-			</div>
-		</DTooltip>
-	</div>
+  <header>
+    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+
+    <div class="wrapper">
+      <HelloWorld msg="You did it!" />
+    </div>
+  </header>
+
+  <main>
+    <TheWelcome />
+  </main>
 </template>
 
-<style lang="scss">
-@import '/dowuiicons/dowuiicons.css';
+<style scoped>
+header {
+  line-height: 1.5;
+}
 
-.section {
-	display: grid;
-	grid-auto-flow: column;
-	justify-items: center;
-	gap: 10px;
-	padding: 10px;
-	margin-top: 50px;
+.logo {
+  display: block;
+  margin: 0 auto 2rem;
+}
+
+@media (min-width: 1024px) {
+  header {
+    display: flex;
+    place-items: center;
+    padding-right: calc(var(--section-gap) / 2);
+  }
+
+  .logo {
+    margin: 0 2rem 0 0;
+  }
+
+  header .wrapper {
+    display: flex;
+    place-items: flex-start;
+    flex-wrap: wrap;
+  }
 }
 </style>
