@@ -3,7 +3,7 @@ import { PUtilsDate, PUtilsNumber, PUtilsString } from 'pols-utils'
 </script>
 
 <script setup lang="ts">
-import { nextTick, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 const emit = defineEmits<{
 	(evemt: 'update:value', value: string | number | null): void
@@ -168,50 +168,50 @@ const updateValue = (value: string | number | undefined | null | unknown, from: 
 			break
 		}
 		case 'time': {
-			// switch (to) {
-			// 	case 'event': {
-			// 		if (typeof value == 'string' && value != '') {
-			// 			const now = new Date()
-			// 			let hour = PUtilsString.padStart(now.getHours(), 2)
-			// 			let minute = PUtilsString.padStart(now.getMinutes() + 1, 2)
-			// 			let second = PUtilsString.padStart(now.getSeconds(), 4)
+			switch (from) {
+				case 'input': {
+					if (typeof value == 'string' && value != '') {
+						const now = new Date()
+						let hour = PUtilsString.padStart(now.getHours(), 2)
+						let minute = PUtilsString.padStart(now.getMinutes(), 2)
+						let second = PUtilsString.padStart(now.getSeconds(), 2)
 
-			// 			if (value != '*') {
-			// 				const match = value.match(/^([0-9]{1,2})(:?([0-9]{1,2})(:?([0-9]{1,2}))?)?$/)
-			// 				if (match) {
-			// 					hour = PUtilsString.padStart(match[1], 2)
-			// 					minute = match[3] ? PUtilsString.padStart(match[3], 2) : minute
-			// 					second = match[5] ? PUtilsString.padStart(match[5], 2) : second
-			// 				} else {
-			// 					thereIsAnError = true
-			// 				}
-			// 			}
+						if (value != '*') {
+							const match = value.match(/^([0-9]{1,2})(:?([0-9]{1,2})(:?([0-9]{1,2}))?)?$/)
+							if (match) {
+								hour = PUtilsString.padStart(match[1], 2)
+								minute = match[3] ? PUtilsString.padStart(match[3], 2) : minute
+								second = match[5] ? PUtilsString.padStart(match[5], 2) : second
+							} else {
+								thereIsAnError = true
+							}
+						}
 
-			// 			if (!thereIsAnError) {
-			// 				if (hour > '23' || minute > '59' || second > '59') {
-			// 					thereIsAnError = true
-			// 					result = ''
-			// 				} else {
-			// 					result = `${hour}:${minute}:${second}`
-			// 				}
-			// 			}
-			// 		}
-			// 		break
-			// 	}
-			// 	case 'input': {
-			// 		if (typeof value == 'string') {
-			// 			const match = value.match(/^([0-2][0-9]):([0-5][0-9]):([0-5][0-9])$/)
-			// 			thereIsAnError = !match || match[1] > '23' || match[2] > '59' || match[3] > '59'
-			// 			result = value
-			// 		} else if (value == null) {
-			// 			result = ''
-			// 		} else {
-			// 			thereIsAnError = true
-			// 			result = value.toString()
-			// 		}
-			// 		break
-			// 	}
-			// }
+						if (!thereIsAnError) {
+							if (hour > '23' || minute > '59' || second > '59') {
+								thereIsAnError = true
+								stringValue = null
+							} else {
+								stringValue = `${hour}:${minute}:${second}`
+							}
+						}
+					}
+					break
+				}
+				case 'property': {
+					if (typeof value == 'string') {
+						const match = value.match(/^([0-2][0-9]):([0-5][0-9]):([0-5][0-9])$/)
+						thereIsAnError = !match || match[1] > '23' || match[2] > '59' || match[3] > '59'
+						stringValue = value
+					} else if (value == null) {
+						stringValue = null
+					} else {
+						thereIsAnError = true
+						stringValue = null
+					}
+					break
+				}
+			}
 			break
 		}
 	}
@@ -239,30 +239,14 @@ const updateValue = (value: string | number | undefined | null | unknown, from: 
 						emit('update:value', PUtilsDate.format(dateValue, '@y-@mm-@dd'))
 					}
 					break
+				case 'time':
+					emit('update:value', stringValue)
+					break
 			}
 			emit('error', thereIsAnError)
 			break
 		case 'property':
-			switch (props.type) {
-				case 'text':
-					inputValue.value = stringValue
-					break
-				case 'number':
-					if (numberValue == null) {
-						inputValue.value = null
-					} else {
-						inputValue.value = isNaN(numberValue) ? 'NaN' : PUtilsNumber.format(numberValue, { decimals: props.decimals })
-					}
-					break
-				case 'date':
-					if (dateValue == null) {
-						inputValue.value = null
-					} else {
-						inputValue.value = isNaN(dateValue.getTime()) ? 'NaN' : PUtilsDate.format(dateValue, '@dd/@mm/@y')
-					}
-					break
-			}
-			emit('error', thereIsAnError)
+			setInputValue()
 			break
 	}
 }
@@ -273,8 +257,7 @@ watch(() => props.value, (newValue) => {
 	}
 })
 
-const setFormatted = async () => {
-	updateValue(inputValue.value, 'input')
+const setInputValue = () => {
 	switch (props.type) {
 		case 'text':
 			inputValue.value = stringValue
@@ -283,7 +266,7 @@ const setFormatted = async () => {
 			if (numberValue == null) {
 				inputValue.value = null
 			} else {
-				inputValue.value = isNaN(numberValue) ? 'NaN' : PUtilsNumber.format(numberValue, { decimals: 2 })
+				inputValue.value = isNaN(numberValue) ? 'NaN' : PUtilsNumber.format(numberValue, { decimals: props.decimals })
 			}
 			break
 		case 'date':
@@ -293,7 +276,15 @@ const setFormatted = async () => {
 				inputValue.value = isNaN(dateValue.getTime()) ? 'NaN' : PUtilsDate.format(dateValue, '@dd/@mm/@y')
 			}
 			break
+		case 'time':
+			inputValue.value = stringValue
+			break
 	}
+}
+
+const setFormatted = () => {
+	updateValue(inputValue.value, 'input')
+	setInputValue()
 }
 
 </script>
@@ -313,4 +304,4 @@ const setFormatted = async () => {
 		outline: none;
 	}
 }
-</style>@/core/utilities
+</style>

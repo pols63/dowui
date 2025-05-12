@@ -7,7 +7,7 @@ const text = ref<string>()
 </script>
 
 <template>
-	<DBaseInput v-model:value="text" type="date" :decimals="2"></DBaseInput>
+	<DBaseInput v-model:value="text" type="time" :decimals="2"></DBaseInput>
 </template>
 
 <style scoped>
