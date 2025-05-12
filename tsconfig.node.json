@@ -16,6 +16,6 @@
 		"types": [
 			"node"
 		],
-		"declaration": true
+		"declaration": true,
 	}
 }
