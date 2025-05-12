@@ -3,7 +3,7 @@ import { PUtilsDate, PUtilsNumber, PUtilsString } from 'pols-utils'
 </script>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 
 const emit = defineEmits<{
 	(evemt: 'update:value', value: string | number | null): void
@@ -30,10 +30,10 @@ const props = withDefaults(defineProps<{
 })
 
 const inputValue = ref<string | null>()
+const inputElement = ref<HTMLElement>()
 let numberValue: number | null
 let dateValue: Date | null
 let stringValue: string | null
-let currentValue: string | number | null | undefined
 
 const updateValue = (value: string | number | undefined | null | unknown, from: 'input' | 'property') => {
 	numberValue = null
@@ -42,6 +42,7 @@ const updateValue = (value: string | number | undefined | null | unknown, from: 
 
 	let thereIsAnError = false
 
+	/* Analiza y transforma el dato de llegada */
 	switch (props.type) {
 		case 'text': {
 			if (value == null) {
@@ -64,8 +65,8 @@ const updateValue = (value: string | number | undefined | null | unknown, from: 
 						const temp = value.replace(/,/g, '').trim()
 						if (!temp) {
 							numberValue = 0
-						} else if (temp.match(/^-?\d*(\.\d+)?$/)) {
-							numberValue = Number(value)
+						} else if (temp.match(/^-?\d*(\.\d*)?$/)) {
+							numberValue = Number(temp)
 							if (numberValue > 999999999999999.9 || numberValue < -999999999999999.9 || !(numberValue >= 0.9999999999999999 || numberValue <= -0.9999999999999999)) {
 								thereIsAnError = true
 								numberValue = 0
@@ -118,55 +119,52 @@ const updateValue = (value: string | number | undefined | null | unknown, from: 
 			break
 		}
 		case 'date': {
-			// switch (from) {
-			// 	case 'input': {
-			// 		if (typeof value == 'string' && value != '') {
-			// 			const now = new Date()
-			// 			let day = PUtilsString.padStart(now.getDate(), 2)
-			// 			let month = PUtilsString.padStart(now.getMonth() + 1, 2)
-			// 			let year = PUtilsString.padStart(now.getFullYear(), 4)
+			switch (from) {
+				case 'input': {
+					if (typeof value == 'string' && value != '') {
+						const now = new Date()
+						let day = PUtilsString.padStart(now.getDate(), 2)
+						let month = PUtilsString.padStart(now.getMonth() + 1, 2)
+						let year = PUtilsString.padStart(now.getFullYear(), 4)
 
-			// 			if (value != '*') {
-			// 				const match = value.match(/^([0-9]{1,2})((\.|\/)?([0-9]{1,2})((\3)?([0-9]{1,4}))?)?$/)
-			// 				if (match) {
-			// 					day = PUtilsString.padStart(match[1], 2)
-			// 					month = match[4] ? PUtilsString.padStart(match[4], 2) : month
-			// 					year = match[7] ? PUtilsString.padStart(match[7], 4) : year
-			// 				} else {
-			// 					thereIsAnError = true
-			// 				}
-			// 			}
+						if (value != '*') {
+							const match = value.match(/^([0-9]{1,2})((\.|\/)?([0-9]{1,2})((\3)?([0-9]{1,4}))?)?$/)
+							if (match) {
+								day = PUtilsString.padStart(match[1], 2)
+								month = match[4] ? PUtilsString.padStart(match[4], 2) : month
+								year = match[7] ? PUtilsString.padStart(match[7], 4) : year
+							} else {
+								thereIsAnError = true
+							}
+						}
 
-			// 			if (!thereIsAnError) {
-			// 				const tempDate = new Date(`${year}-${month}-${day} 00:00:00`)
-			// 				if (isNaN(tempDate.getTime())) {
-			// 					thereIsAnError = true
-			// 					result = ''
-			// 				} else {
-			// 					result = PUtilsDate.format(tempDate, '@y-@mm-@dd')
-			// 				}
-			// 			}
-			// 		}
-			// 		break
-			// 	}
-			// 	case 'property': {
-			// 		if (typeof value == 'string') {
-			// 			const tempDate = new Date(`${value} 00:00:00`)
-			// 			if (isNaN(tempDate.getTime())) {
-			// 				thereIsAnError = true
-			// 				result = value
-			// 			} else {
-			// 				result = PUtilsDate.format(tempDate, '@dd/@mm/@y')
-			// 			}
-			// 		} else if (value == null) {
-			// 			result = ''
-			// 		} else {
-			// 			thereIsAnError = true
-			// 			result = value.toString()
-			// 		}
-			// 		break
-			// 	}
-			// }
+						if (!thereIsAnError) {
+							const tempDate = new Date(`${year}-${month}-${day} 00:00:00`)
+							thereIsAnError = isNaN(tempDate.getTime())
+							dateValue = thereIsAnError ? null : tempDate
+						}
+					}
+					break
+				}
+				case 'property': {
+					if (typeof value == 'string') {
+						if (!value.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)) {
+							thereIsAnError = true
+							dateValue = new Date(NaN)
+						} else {
+							const tempDate = new Date(`${value} 00:00:00`)
+							thereIsAnError = isNaN(tempDate.getTime())
+							dateValue = tempDate
+						}
+					} else if (value == null) {
+						dateValue = null
+					} else {
+						thereIsAnError = true
+						dateValue = new Date(NaN)
+					}
+					break
+				}
+			}
 			break
 		}
 		case 'time': {
@@ -218,11 +216,28 @@ const updateValue = (value: string | number | undefined | null | unknown, from: 
 		}
 	}
 
+	/* Analiza y muestra o asigna el valor encontrado */
 	switch (from) {
 		case 'input':
 			switch (props.type) {
 				case 'text':
 					emit('update:value', stringValue)
+					break
+				case 'number':
+					if (numberValue == null || isNaN(numberValue)) {
+						emit('update:value', numberValue)
+					} else {
+						emit('update:value', PUtilsNumber.round(numberValue, props.decimals))
+					}
+					break
+				case 'date':
+					if (dateValue == null) {
+						emit('update:value', null)
+					} else if (isNaN(dateValue.getTime())) {
+						emit('update:value', NaN)
+					} else {
+						emit('update:value', PUtilsDate.format(dateValue, '@y-@mm-@dd'))
+					}
 					break
 			}
 			emit('error', thereIsAnError)
@@ -232,6 +247,20 @@ const updateValue = (value: string | number | undefined | null | unknown, from: 
 				case 'text':
 					inputValue.value = stringValue
 					break
+				case 'number':
+					if (numberValue == null) {
+						inputValue.value = null
+					} else {
+						inputValue.value = isNaN(numberValue) ? 'NaN' : PUtilsNumber.format(numberValue, { decimals: props.decimals })
+					}
+					break
+				case 'date':
+					if (dateValue == null) {
+						inputValue.value = null
+					} else {
+						inputValue.value = isNaN(dateValue.getTime()) ? 'NaN' : PUtilsDate.format(dateValue, '@dd/@mm/@y')
+					}
+					break
 			}
 			emit('error', thereIsAnError)
 			break
@@ -239,36 +268,39 @@ const updateValue = (value: string | number | undefined | null | unknown, from: 
 }
 
 watch(() => props.value, (newValue) => {
-	if (newValue != currentValue) updateValue(newValue, 'property')
+	if (document.activeElement !== inputElement.value) {
+		updateValue(newValue, 'property')
+	}
 })
 
-const inputEvent = (event: Event) => {
+const setFormatted = async () => {
 	updateValue(inputValue.value, 'input')
-}
-
-const changeEvent = (event: Event) => {
-	if (!inputValue.value) return
 	switch (props.type) {
-		case 'number': {
-			if (typeof currentValue == 'number') {
-				inputValue.value = PUtilsNumber.format(currentValue, { decimals: props.decimals })
-				updateValue(inputValue.value, 'input')
+		case 'text':
+			inputValue.value = stringValue
+			break
+		case 'number':
+			if (numberValue == null) {
+				inputValue.value = null
+			} else {
+				inputValue.value = isNaN(numberValue) ? 'NaN' : PUtilsNumber.format(numberValue, { decimals: 2 })
 			}
 			break
-		}
-		case 'date': {
-			if (typeof currentValue == 'string' && currentValue) {
-				inputValue.value = PUtilsDate.format(new Date(`${currentValue} 00:00:00`), '@dd/@mm/@y')
-				updateValue(inputValue.value, 'input')
+		case 'date':
+			if (dateValue == null) {
+				inputValue.value = null
+			} else {
+				inputValue.value = isNaN(dateValue.getTime()) ? 'NaN' : PUtilsDate.format(dateValue, '@dd/@mm/@y')
 			}
 			break
-		}
 	}
 }
+
 </script>
 
 <template>
-	<input class="d-base-input" v-model="inputValue" @input="inputEvent($event)" @change="changeEvent">
+	<input ref="inputElement" class="d-base-input" v-model="inputValue" @input="updateValue(inputValue, 'input')"
+		@focusout="setFormatted()">
 </template>
 
 <style lang="scss" scoped>
