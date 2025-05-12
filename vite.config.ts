@@ -11,21 +11,29 @@ export default defineConfig({
 		vue(),
 		vueDevTools(),
 		dts({
-			include: ['src'], // asegúrate que incluya tu código fuente
+			include: ['src'],
 			insertTypesEntry: true,
-			outDir: 'dist',      // Asegúrate de que coincida con tu build
+			outDir: 'dist'
 		})
 	],
 	resolve: {
 		alias: {
 			'@': fileURLToPath(new URL('./src', import.meta.url))
-		},
+		}
 	},
 	build: {
 		lib: {
-			entry: 'src/index.ts', // 👈 Le dices a Vite dónde está tu archivo de entrada
+			entry: 'src/index.ts',
 			name: 'Dowui',
-			fileName: (format) => `index.${format}.js`,
+			fileName: (format) => `index.${format}.js`
+		},
+		rollupOptions: {
+			external: ['vue'],
+			output: {
+				globals: {
+					vue: 'Vue'
+				}
+			}
 		}
 	}
 })
