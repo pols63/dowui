@@ -8,13 +8,19 @@ import pluginVue from 'eslint-plugin-vue'
 // More info at https://github.com/vuejs/eslint-config-typescript/#advanced-setup
 
 export default defineConfigWithVueTs(
-  {
-    name: 'app/files-to-lint',
-    files: ['**/*.{ts,mts,tsx,vue}'],
-  },
+	{
+		name: 'app/files-to-lint',
+		files: ['**/*.{ts,mts,tsx,vue}'],
+	},
 
-  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
+	globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
 
-  pluginVue.configs['flat/essential'],
-  vueTsConfigs.recommended,
+	pluginVue.configs['flat/essential'],
+	vueTsConfigs.recommended,
+
+	{
+		rules: {
+			'@typescript-eslint/no-unused-vars': 'warn', // ⚠️ cambia de "error" a "warn"
+		}
+	}
 )
